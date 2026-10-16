@@ -1,0 +1,17 @@
+{
+  "id": "./",
+  "name": "Documentos Seguros",
+  "short_name": "Doc. Seguros",
+  "description": "Caja fuerte local cifrada para documentos personales, familiares y empresariales.",
+  "start_url": "./index.html",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "portrait-primary",
+  "background_color": "#f3f6fa",
+  "theme_color": "#102a43",
+  "lang": "es-SV",
+  "categories": [
+    "productivity",
+    "security"
+  ]
+}
