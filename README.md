@@ -66,3 +66,9 @@ Nombre de marca actualizado a MiVault en la interfaz y el manifiesto PWA. Se inc
 - Reportes consulta los documentos guardados, no solo el historial de aperturas de adjuntos.
 - Filtros por fecha de creación, grupo (Personal/Familia/Empresa) y tipo de documento.
 - Exportación CSV con los mismos filtros.
+
+
+## MiVault v0.13 — abrir adjuntos desde Reportes
+- Añade una columna final con botones para abrir cada archivo adjunto asociado al documento.
+- PDF e imágenes intentan abrirse en una pestaña nueva; otros formatos se descargan.
+- El botón usa el documento y adjunto almacenados en la caja fuerte local desbloqueada.
