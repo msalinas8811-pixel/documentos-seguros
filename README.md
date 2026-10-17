@@ -60,3 +60,9 @@ Nombre de marca actualizado a MiVault en la interfaz y el manifiesto PWA. Se inc
 - Cambia la versión del service worker y elimina cachés anteriores al activarse.
 - La página principal se solicita primero al servidor para reducir el riesgo de mostrar una versión antigua.
 - En Reportes, «Consultar reporte» aplica los filtros; el historial registra aperturas de archivos adjuntos.
+
+
+## MiVault v0.12 — consulta de documentos por fecha y grupo
+- Reportes consulta los documentos guardados, no solo el historial de aperturas de adjuntos.
+- Filtros por fecha de creación, grupo (Personal/Familia/Empresa) y tipo de documento.
+- Exportación CSV con los mismos filtros.
