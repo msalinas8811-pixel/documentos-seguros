@@ -82,3 +82,9 @@ Nombre de marca actualizado a MiVault en la interfaz y el manifiesto PWA. Se inc
 - Se elimina el botón duplicado; queda uno debajo del nombre del documento, junto al adjunto.
 - Fotos e imágenes y PDF se muestran en un visor dentro de MiVault, sin abrir otra página, para evitar perder la sesión desbloqueada al regresar.
 - Otros formatos ofrecen descarga desde el visor.
+
+
+## MiVault v0.16 — botón único en la última columna
+- Elimina el botón que aparecía debajo del nombre del documento.
+- Conserva únicamente el botón «Abrir archivo» en la columna final de la tabla.
+- Mantiene el visor integrado para imágenes y PDF.
