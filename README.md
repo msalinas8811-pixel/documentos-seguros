@@ -54,3 +54,9 @@ Nombre de marca actualizado a MiVault en la interfaz y el manifiesto PWA. Se inc
 - El filtro compara fechas del calendario local del dispositivo para evitar desfases por zona horaria.
 - Se añadió el botón «Consultar reporte»; los filtros también actualizan el reporte automáticamente.
 - La exportación CSV utiliza exactamente los mismos filtros que el reporte en pantalla.
+
+
+## MiVault v0.11 — actualización del caché
+- Cambia la versión del service worker y elimina cachés anteriores al activarse.
+- La página principal se solicita primero al servidor para reducir el riesgo de mostrar una versión antigua.
+- En Reportes, «Consultar reporte» aplica los filtros; el historial registra aperturas de archivos adjuntos.
