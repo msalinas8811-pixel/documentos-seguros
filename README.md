@@ -72,3 +72,7 @@ Nombre de marca actualizado a MiVault en la interfaz y el manifiesto PWA. Se inc
 - Añade una columna final con botones para abrir cada archivo adjunto asociado al documento.
 - PDF e imágenes intentan abrirse en una pestaña nueva; otros formatos se descargan.
 - El botón usa el documento y adjunto almacenados en la caja fuerte local desbloqueada.
+
+
+## MiVault v0.14 — botón de apertura visible en móvil
+- El botón para abrir cada adjunto aparece también debajo del nombre del documento, además de la última columna, para que sea visible en pantallas estrechas.
