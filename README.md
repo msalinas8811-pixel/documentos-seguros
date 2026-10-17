@@ -1,29 +1,32 @@
-# Documentos Seguros PWA v0.4 — caja fuerte local cifrada
+# Documentos Seguros / Secure Documents — PWA v0.5
 
-## Incluye
-- PWA con `manifest.json`, icono y service worker para almacenar la interfaz y abrirla sin conexión después de la primera carga.
-- Caja fuerte protegida por contraseña.
-- Cifrado AES-GCM de 256 bits mediante Web Crypto API; clave derivada con PBKDF2-HMAC-SHA-256 (310,000 iteraciones) y sal aleatoria.
-- Registros y archivos adjuntos cifrados juntos antes de guardarse en IndexedDB.
-- Búsqueda, categorías, espacios Personal/Familia/Empresa, fecha de vencimiento, notas y adjuntos PDF/imágenes de hasta 15 MB.
-- Respaldo `.dsafe` cifrado con una contraseña que se introduce al exportar; restauración con la contraseña del respaldo.
+## Funciones / Features
+- Interfaz bilingüe: español e inglés, con selector ES/EN.
+- Menú horizontal adaptable a móvil y escritorio.
+- Caja fuerte local protegida por contraseña.
+- Cifrado AES-GCM de 256 bits y clave derivada con PBKDF2-HMAC-SHA-256 (310,000 iteraciones).
+- Registros cifrados con categorías, espacios Personal/Familia/Empresa, vencimiento y notas.
+- Adjuntar varios PDF e imágenes a un registro.
+- Botón de cámara para capturar fotografías directamente en dispositivos compatibles; permite añadir varias capturas antes de guardar.
+- Respaldo `.dsafe` cifrado y restauración protegida por contraseña.
+- PWA con manifest, icono y service worker para guardar la interfaz y volver a abrirla sin conexión después de la primera carga.
 
-## Cómo probar
-1. Extrae el ZIP.
-2. Publica la carpeta en un sitio HTTPS o ejecútala desde `localhost`. Abrir el archivo `index.html` directamente no habilita todas las funciones de seguridad/PWA.
-3. Abre el sitio en el navegador y crea una contraseña de al menos 10 caracteres.
-4. Agrega documentos de prueba y crea un respaldo cifrado `.dsafe`.
-5. Cierra y vuelve a abrir para verificar que pide contraseña y conserva los datos.
-6. Prueba restaurar el respaldo en una instalación de prueba antes de guardar documentos importantes.
+## Cómo probar / How to test
+1. Extrae el ZIP y publica la carpeta en HTTPS o ejecútala desde `localhost`.
+2. Abre la app y crea una contraseña de al menos 10 caracteres.
+3. Selecciona varios archivos o pulsa “Tomar foto / Take photo” en un dispositivo móvil.
+4. Guarda el documento, bloquea la caja fuerte y vuelve a abrirla.
+5. Crea un respaldo cifrado y comprueba la restauración.
 
-## Instalar
-- Android/Chrome: abre el sitio HTTPS y elige “Instalar aplicación” o “Añadir a pantalla de inicio”.
-- iPhone/iPad: abre el sitio en Safari, toca Compartir y elige “Añadir a pantalla de inicio”.
-- La instalación depende de servir la carpeta en HTTPS; el ZIP no se instala directamente como app.
+## Instalación / Installation
+- Android: abre el sitio HTTPS en Chrome y elige “Instalar aplicación” o “Añadir a pantalla de inicio”.
+- iPhone/iPad: abre el sitio HTTPS en Safari, pulsa Compartir y luego “Añadir a pantalla de inicio”.
+- La cámara requiere permiso del navegador y normalmente un contexto HTTPS. El botón de captura puede comportarse distinto según el dispositivo/navegador.
+- El ZIP no se instala directamente; primero hay que alojar los archivos en HTTPS.
 
-## Límites importantes
-- Esta versión guarda los datos solo en el dispositivo/navegador. No hay nube, cuentas, sincronización entre teléfonos ni pagos.
-- La contraseña no se almacena. Si se pierde, los datos cifrados y el respaldo no se pueden recuperar.
-- Guarda la contraseña del respaldo por separado. No compartas el archivo `.dsafe` ni la contraseña.
-- El service worker almacena los archivos de interfaz para uso offline; la primera visita requiere conexión para cargar la app.
-- Es un prototipo, no una auditoría de seguridad. No lo uses todavía como único archivo de documentos críticos. Antes de producción hacen falta pruebas en dispositivos reales, revisión de seguridad, manejo de cuotas/archivos grandes, validación más estricta, CSP y un plan de recuperación.
+## Límites de seguridad / Security limitations
+- Esta es una versión de prueba, no una auditoría de seguridad.
+- Los datos se guardan únicamente en este navegador/dispositivo; no hay nube, cuentas ni sincronización entre teléfonos.
+- La contraseña no se almacena. Si se pierde, no se puede recuperar la caja fuerte ni el respaldo.
+- Guarda la contraseña del respaldo por separado.
+- Usa datos ficticios mientras pruebas. Antes de producción se requieren pruebas en dispositivos reales, auditoría de seguridad, validación adicional de archivos y pruebas de recuperación.

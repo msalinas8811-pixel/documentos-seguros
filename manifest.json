@@ -1,8 +1,8 @@
 {
   "id": "./",
-  "name": "Documentos Seguros",
-  "short_name": "Doc. Seguros",
-  "description": "Caja fuerte local cifrada para documentos personales, familiares y empresariales.",
+  "name": "Documentos Seguros / Secure Documents",
+  "short_name": "Secure Docs",
+  "description": "Caja fuerte local cifrada para documentos personales, familiares y empresariales / Encrypted local vault for personal, family and business documents.",
   "start_url": "./index.html",
   "scope": "./",
   "display": "standalone",
