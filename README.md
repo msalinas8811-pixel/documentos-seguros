@@ -1,4 +1,4 @@
-# Documentos Seguros / Secure Documents — PWA v0.7
+# Documentos Seguros / Secure Documents — PWA v0.8
 
 ## Funciones / Features
 - Interfaz bilingüe: español e inglés, con selector ES/EN.
@@ -33,10 +33,14 @@
 - Usa datos ficticios mientras pruebas. Antes de producción se requieren pruebas en dispositivos reales, auditoría de seguridad, validación adicional de archivos y pruebas de recuperación.
 
 
-## Navegación por páginas y reportes (v0.7)
+## Navegación por páginas y reportes (v0.8)
 - Menú horizontal con acceso a Caja fuerte, Documentos, Reportes y Respaldos.
 - Cada opción del menú muestra solo su propia pantalla.
 - Registra fecha y hora cuando se pulsa el botón de un archivo adjunto para abrir/descargarlo.
 - Filtra el historial por rango de fechas y categoría del documento.
 - Exporta los resultados a CSV.
 - El historial queda dentro de la bóveda cifrada y es local a este dispositivo; no registra consultas hechas en otros teléfonos.
+
+
+## Navegación v0.8
+Cada opción del menú muestra exclusivamente su pantalla. Las pantallas no seleccionadas se ocultan con `hidden`, `aria-hidden` y reglas CSS explícitas. Al desbloquear la caja fuerte se abre únicamente Caja fuerte. La caché de la PWA se renueva para evitar reutilizar la interfaz anterior.
