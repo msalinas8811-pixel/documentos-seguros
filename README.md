@@ -76,3 +76,9 @@ Nombre de marca actualizado a MiVault en la interfaz y el manifiesto PWA. Se inc
 
 ## MiVault v0.14 — botón de apertura visible en móvil
 - El botón para abrir cada adjunto aparece también debajo del nombre del documento, además de la última columna, para que sea visible en pantallas estrechas.
+
+
+## MiVault v0.15 — botón único y visor integrado
+- Se elimina el botón duplicado; queda uno debajo del nombre del documento, junto al adjunto.
+- Fotos e imágenes y PDF se muestran en un visor dentro de MiVault, sin abrir otra página, para evitar perder la sesión desbloqueada al regresar.
+- Otros formatos ofrecen descarga desde el visor.
