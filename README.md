@@ -1,4 +1,4 @@
-# Documentos Seguros / Secure Documents — PWA v0.5
+# Documentos Seguros / Secure Documents — PWA v0.6
 
 ## Funciones / Features
 - Interfaz bilingüe: español e inglés, con selector ES/EN.
@@ -30,3 +30,11 @@
 - La contraseña no se almacena. Si se pierde, no se puede recuperar la caja fuerte ni el respaldo.
 - Guarda la contraseña del respaldo por separado.
 - Usa datos ficticios mientras pruebas. Antes de producción se requieren pruebas en dispositivos reales, auditoría de seguridad, validación adicional de archivos y pruebas de recuperación.
+
+
+## Reportes de consultas (v0.6)
+- Menú horizontal con acceso a Reportes.
+- Registra fecha y hora cuando se pulsa el botón de un archivo adjunto para abrir/descargarlo.
+- Filtra el historial por rango de fechas y categoría del documento.
+- Exporta los resultados a CSV.
+- El historial queda dentro de la bóveda cifrada y es local a este dispositivo; no registra consultas hechas en otros teléfonos.
