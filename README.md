@@ -44,3 +44,7 @@
 
 ## Navegación v0.8
 Cada opción del menú muestra exclusivamente su pantalla. Las pantallas no seleccionadas se ocultan con `hidden`, `aria-hidden` y reglas CSS explícitas. Al desbloquear la caja fuerte se abre únicamente Caja fuerte. La caché de la PWA se renueva para evitar reutilizar la interfaz anterior.
+
+
+## MiVault v0.9 — Identidad visual
+Nombre de marca actualizado a MiVault en la interfaz y el manifiesto PWA. Se incorporó un icono SVG profesional, el logotipo completo `logo-mivault.png` y una nueva clave de caché para forzar la actualización de recursos. Se conserva el identificador interno de formato de respaldo para mantener la compatibilidad con respaldos cifrados existentes.
