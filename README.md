@@ -48,3 +48,9 @@ Cada opción del menú muestra exclusivamente su pantalla. Las pantallas no sele
 
 ## MiVault v0.9 — Identidad visual
 Nombre de marca actualizado a MiVault en la interfaz y el manifiesto PWA. Se incorporó un icono SVG profesional, el logotipo completo `logo-mivault.png` y una nueva clave de caché para forzar la actualización de recursos. Se conserva el identificador interno de formato de respaldo para mantener la compatibilidad con respaldos cifrados existentes.
+
+
+## MiVault v0.10 — corrección de reportes por fecha
+- El filtro compara fechas del calendario local del dispositivo para evitar desfases por zona horaria.
+- Se añadió el botón «Consultar reporte»; los filtros también actualizan el reporte automáticamente.
+- La exportación CSV utiliza exactamente los mismos filtros que el reporte en pantalla.
