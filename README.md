@@ -1,8 +1,9 @@
-# Documentos Seguros / Secure Documents — PWA v0.6
+# Documentos Seguros / Secure Documents — PWA v0.7
 
 ## Funciones / Features
 - Interfaz bilingüe: español e inglés, con selector ES/EN.
 - Menú horizontal adaptable a móvil y escritorio.
+- Cada opción del menú abre una pantalla independiente dentro de la aplicación; no se desplaza por una página larga.
 - Caja fuerte local protegida por contraseña.
 - Cifrado AES-GCM de 256 bits y clave derivada con PBKDF2-HMAC-SHA-256 (310,000 iteraciones).
 - Registros cifrados con categorías, espacios Personal/Familia/Empresa, vencimiento y notas.
@@ -32,8 +33,9 @@
 - Usa datos ficticios mientras pruebas. Antes de producción se requieren pruebas en dispositivos reales, auditoría de seguridad, validación adicional de archivos y pruebas de recuperación.
 
 
-## Reportes de consultas (v0.6)
-- Menú horizontal con acceso a Reportes.
+## Navegación por páginas y reportes (v0.7)
+- Menú horizontal con acceso a Caja fuerte, Documentos, Reportes y Respaldos.
+- Cada opción del menú muestra solo su propia pantalla.
 - Registra fecha y hora cuando se pulsa el botón de un archivo adjunto para abrir/descargarlo.
 - Filtra el historial por rango de fechas y categoría del documento.
 - Exporta los resultados a CSV.
