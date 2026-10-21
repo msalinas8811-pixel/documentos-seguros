@@ -1,4 +1,4 @@
-# Documentos Seguros / Secure Documents — PWA v0.8
+# MiVault — PWA v0.17
 
 ## Funciones / Features
 - Interfaz bilingüe: español e inglés, con selector ES/EN.
@@ -28,7 +28,7 @@
 ## Límites de seguridad / Security limitations
 - Esta es una versión de prueba, no una auditoría de seguridad.
 - Los datos se guardan únicamente en este navegador/dispositivo; no hay nube, cuentas ni sincronización entre teléfonos.
-- La contraseña no se almacena. Si se pierde, no se puede recuperar la caja fuerte ni el respaldo.
+- La contraseña no se almacena. Si se pierde, solo se recupera el acceso con el código de recuperación (desde v0.17). La contraseña de un respaldo `.dsafe` no se puede recuperar.
 - Guarda la contraseña del respaldo por separado.
 - Usa datos ficticios mientras pruebas. Antes de producción se requieren pruebas en dispositivos reales, auditoría de seguridad, validación adicional de archivos y pruebas de recuperación.
 
@@ -88,3 +88,33 @@ Nombre de marca actualizado a MiVault en la interfaz y el manifiesto PWA. Se inc
 - Elimina el botón que aparecía debajo del nombre del documento.
 - Conserva únicamente el botón «Abrir archivo» en la columna final de la tabla.
 - Mantiene el visor integrado para imágenes y PDF.
+
+
+## MiVault v0.17 — recuperación de contraseña y mejoras de seguridad
+
+### Cómo funciona la recuperación
+- La bóveda ahora se cifra con una **clave maestra aleatoria** (AES-GCM-256). Esa clave se guarda envuelta dos veces: con la contraseña y con un **código de recuperación** de 32 caracteres (160 bits, Base32 Crockford, p. ej. `7KQ2-…`). Ambos envoltorios usan PBKDF2-SHA-256 con 310,000 iteraciones y sal propia.
+- Al crear la caja fuerte se muestra el código con opciones para copiar, descargar `.txt` o imprimir. Hay que confirmar que se guardó antes de continuar.
+- En la pantalla de desbloqueo, «¿Olvidaste tu contraseña?» permite escribir el código y definir una contraseña nueva **sin perder documentos**. Después se genera un código nuevo y el anterior deja de funcionar.
+- Si no se tiene ni contraseña ni código, la única opción es borrar la caja fuerte del dispositivo (hay que escribir BORRAR) y restaurar un respaldo `.dsafe`.
+- No hay servidor, correo ni SMS: la recuperación funciona sin conexión y nadie más puede restablecer el acceso.
+
+### Migración automática
+- Las cajas fuertes creadas con v0.16 o anteriores (formato 1) siguen abriendo con su contraseña. Al desbloquearlas por primera vez se convierten al formato 2 y se muestra su código de recuperación.
+- Los respaldos `.dsafe` mantienen el mismo formato y son compatibles en ambos sentidos.
+
+### Nueva página «Seguridad»
+- Cambiar contraseña (requiere la actual; el código de recuperación sigue siendo válido).
+- Generar un código de recuperación nuevo (invalida el anterior).
+- Bloqueo automático por inactividad: 1, 5 (predeterminado), 15 o 30 minutos, o nunca.
+
+### Otras mejoras
+- Límite de intentos: tras 5 contraseñas incorrectas hay una espera creciente (30 s, 60 s… hasta 15 min).
+- Medidor de seguridad de contraseña y botón «Ver/Ocultar» en todos los campos de contraseña.
+- Panel «Próximos vencimientos» en Caja fuerte y etiquetas «Vencido/Vence pronto» en Documentos.
+- Los adjuntos en Documentos se abren en el visor integrado (como en Reportes); el visor tiene botón Descargar y se cierra con Esc.
+- Traducción completa al inglés de mensajes, alertas y pantallas que antes quedaban en español; se corrigió la columna «Adjuntos» del reporte.
+- Mensajes en línea en lugar de ventanas `alert()`; botones muestran «Procesando…» mientras se cifra.
+- Exportación CSV protegida contra inyección de fórmulas en Excel.
+- Iconos PNG 192/512 y maskable para instalación en Android/iPhone; logotipo optimizado (de 1.2 MB a ~100 KB).
+- Nueva clave de caché del service worker.

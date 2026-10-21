@@ -5,149 +5,535 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="theme-color" content="#102a43">
 <meta name="description" content="Caja fuerte local cifrada para documentos personales, familiares y empresariales.">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="MiVault">
 <link rel="manifest" href="./manifest.json">
 <link rel="icon" href="./icon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="./icon-192.png">
 <title>MiVault</title>
 <style>
-:root{--navy:#102a43;--blue:#176b87;--teal:#2bb3a3;--bg:#f3f6fa;--ink:#172b4d;--muted:#64748b;--line:#dce5ee;--white:#fff;--red:#a33b3b}
-*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.5 system-ui,-apple-system,Segoe UI,sans-serif}header{background:var(--navy);color:white;padding:18px max(18px,calc((100% - 1000px)/2));display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap}.brand h1{font-size:22px;margin:0}.brand-title{display:flex;align-items:center;gap:10px}.brand-icon{width:38px;height:38px;display:block}.brand-accent{color:var(--teal)}.mainnav{max-width:1000px;margin:auto;padding:8px 16px;display:flex;align-items:center;gap:6px;flex-wrap:wrap;background:#fff;border-bottom:1px solid var(--line)}.navitem{background:transparent;color:var(--muted);border-radius:9px;padding:10px 13px}.navitem.active,.navitem:hover{background:#e6f5f2;color:#135e58}.navhint{margin-left:auto;color:var(--muted);font-size:12px;padding:0 8px}header h1{font-size:22px;margin:0}header p{margin:3px 0 0;color:#d7e5ee;font-size:13px}.wrap{max-width:1000px;margin:auto;padding:20px}.app-page{display:none!important}.app-page.active{display:block!important}.panel{background:white;border:1px solid var(--line);border-radius:16px;padding:18px;margin:0 0 16px;box-shadow:0 4px 18px #102a4308}h2{font-size:18px;margin:0 0 12px}.muted,small{color:var(--muted)}.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:12px}.field{display:flex;flex-direction:column;gap:5px;margin-bottom:12px}label{font-weight:650;font-size:13px}input,select,textarea{font:inherit;padding:11px 12px;border:1px solid #cbd5e1;border-radius:9px;width:100%;background:white;color:var(--ink)}button,.button{font:inherit;font-weight:650;border:0;border-radius:10px;padding:10px 14px;background:var(--blue);color:white;cursor:pointer;text-decoration:none;display:inline-flex;justify-content:center;align-items:center;gap:7px}button.secondary{background:#e8f0f5;color:var(--navy)}button.danger{background:#fff0f0;color:var(--red)}button:disabled{opacity:.5;cursor:not-allowed}.actions{display:flex;gap:8px;flex-wrap:wrap}.hidden{display:none!important}.status{padding:10px 12px;border-radius:10px;background:#eaf8f4;color:#135e52;margin-bottom:12px}.warning{background:#fff7e6;color:#795516}.error{background:#fff0f0;color:#8c2f2f}.doc{border:1px solid var(--line);border-radius:12px;padding:13px;display:flex;justify-content:space-between;gap:12px;align-items:flex-start;margin-top:9px}.doc h3{margin:0 0 3px;font-size:15px}.report-table{width:100%;border-collapse:collapse;margin-top:12px;font-size:14px}.report-table th,.report-table td{text-align:left;padding:10px 8px;border-bottom:1px solid var(--line);vertical-align:top}.report-table th{background:#f7fafc;color:var(--muted)}.report-summary{display:flex;gap:10px;flex-wrap:wrap;margin:8px 0}.report-stat{background:#e6f5f2;border-radius:10px;padding:10px 14px;color:#135e58;font-weight:700}.tag{font-size:12px;background:#e8f0f5;border-radius:999px;padding:3px 8px;display:inline-block;margin:2px}.foot{font-size:12px;color:var(--muted);padding:4px 0 20px}.right{margin-left:auto}.lock{max-width:500px;margin:7vh auto}.topline{display:flex;align-items:center;gap:8px;flex-wrap:wrap}.count{font-size:13px;color:var(--muted)}@media(max-width:600px){.wrap{padding:12px}header{padding:16px}.mainnav{overflow-x:auto;flex-wrap:nowrap}.navitem{white-space:nowrap;padding:9px 10px}.navhint{display:none}.doc{flex-direction:column}.doc .actions{width:100%}.doc button{flex:1}}
-
-.report-table{width:100%;border-collapse:collapse}
-.report-table th,.report-table td{padding:10px 8px;vertical-align:top;text-align:left}
+:root{--navy:#102a43;--blue:#176b87;--teal:#2bb3a3;--teal-soft:#e6f5f2;--teal-ink:#135e58;--bg:#f3f6fa;--ink:#172b4d;--muted:#64748b;--line:#dce5ee;--white:#fff;--red:#a33b3b;--amber:#9a6a12;--amber-soft:#fff7e6}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.5 system-ui,-apple-system,"Segoe UI",sans-serif}
+header{background:var(--navy);color:#fff;padding:18px max(18px,calc((100% - 1000px)/2));display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap}
+.brand-title{display:flex;align-items:center;gap:10px;font-size:22px;margin:0}.brand-icon{width:38px;height:38px;display:block}.brand-accent{color:var(--teal)}
+header p{margin:3px 0 0;color:#d7e5ee;font-size:13px}
+.mainnav{max-width:1000px;margin:auto;padding:8px 16px;display:flex;align-items:center;gap:6px;flex-wrap:wrap;background:#fff;border-bottom:1px solid var(--line)}
+.mainnav.hidden{display:none!important}
+.navitem{background:transparent;color:var(--muted);border-radius:9px;padding:10px 13px}.navitem.active,.navitem:hover{background:var(--teal-soft);color:var(--teal-ink)}
+.navhint{margin-left:auto;color:var(--muted);font-size:12px;padding:0 8px}
+.wrap{max-width:1000px;margin:auto;padding:20px}
+.app-page{display:none!important}.app-page.active{display:block!important}
+.panel{background:#fff;border:1px solid var(--line);border-radius:16px;padding:18px;margin:0 0 16px;box-shadow:0 4px 18px #102a4308}
+h2{font-size:18px;margin:0 0 12px}h3{font-size:15px;margin:0 0 8px}
+.muted,small{color:var(--muted)}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:12px}
+.field{display:flex;flex-direction:column;gap:5px;margin-bottom:12px}
+label{font-weight:650;font-size:13px}
+input,select,textarea{font:inherit;padding:11px 12px;border:1px solid #cbd5e1;border-radius:9px;width:100%;background:#fff;color:var(--ink)}
+input:focus,select:focus,textarea:focus{outline:2px solid #2bb3a355;border-color:var(--teal)}
+button,.button{font:inherit;font-weight:650;border:0;border-radius:10px;padding:10px 14px;background:var(--blue);color:#fff;cursor:pointer;text-decoration:none;display:inline-flex;justify-content:center;align-items:center;gap:7px}
+button.secondary,.button.secondary{background:#e8f0f5;color:var(--navy)}
+button.danger{background:#fff0f0;color:var(--red)}button.danger.solid{background:var(--red);color:#fff}
+button.link{background:none;color:var(--blue);padding:4px 0;font-weight:600;text-decoration:underline;text-underline-offset:3px}
+button:disabled{opacity:.5;cursor:not-allowed}
+.actions{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+.hidden{display:none!important}
+.status{padding:10px 12px;border-radius:10px;background:#eaf8f4;color:#135e52;margin-bottom:12px}
+.msg{padding:10px 12px;border-radius:10px;margin:12px 0 0;font-size:14px}
+.msg.ok{background:#eaf8f4;color:#135e52}.msg.warn{background:var(--amber-soft);color:#795516}.msg.err,.error{background:#fff0f0;color:#8c2f2f}
+.doc{border:1px solid var(--line);border-radius:12px;padding:13px;display:flex;justify-content:space-between;gap:12px;align-items:flex-start;margin-top:9px}
+.doc h3{margin:0 0 3px}
+.tag{font-size:12px;background:#e8f0f5;border-radius:999px;padding:3px 8px;display:inline-block;margin:2px}
+.tag.soon{background:var(--amber-soft);color:var(--amber)}.tag.expired{background:#fff0f0;color:var(--red)}
+.report-table{width:100%;border-collapse:collapse;margin-top:12px;font-size:14px}
+.report-table th,.report-table td{text-align:left;padding:10px 8px;border-bottom:1px solid var(--line);vertical-align:top}
+.report-table th{background:#f7fafc;color:var(--muted)}
 .report-table td button[data-report-open]{white-space:normal;max-width:100%;font-size:14px;padding:8px 10px}
-@media(max-width:600px){.report-table{min-width:720px}.report-table td button[data-report-open]{display:block;margin:4px 0}}
-
+.report-summary{display:flex;gap:10px;flex-wrap:wrap;margin:8px 0}
+.report-stat{background:var(--teal-soft);border-radius:10px;padding:10px 14px;color:var(--teal-ink);font-weight:700}
+.foot{font-size:12px;color:var(--muted);padding:4px 0 20px}
+.lock{max-width:500px;margin:5vh auto}
+.lock-logo{display:block;width:112px;height:112px;margin:-4px auto 6px}
+.topline{display:flex;align-items:center;gap:8px;flex-wrap:wrap;justify-content:space-between}
+.count{font-size:13px;color:var(--muted)}
+.pw-wrap{position:relative}.pw-wrap input{padding-right:78px}
+.pw-toggle{position:absolute;right:6px;top:50%;transform:translateY(-50%);padding:6px 10px;font-size:12px;background:#eef3f7;color:var(--navy);border-radius:7px}
+.meter{height:6px;border-radius:99px;background:#e8eef4;overflow:hidden;margin-top:2px}.meter span{display:block;height:100%;width:0;transition:width .2s,background .2s}
+.meter-label{font-size:12px;color:var(--muted);min-height:18px}
+.code-box{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin:14px 0;padding:14px;background:#0f2438;border-radius:12px}
+.code-box span{font:700 17px/1.2 ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;color:#bff3ea;text-align:center;letter-spacing:.08em;padding:8px 0;background:#ffffff0d;border-radius:7px}
+.tips{margin:12px 0;padding-left:18px;color:var(--muted);font-size:14px}.tips li{margin:4px 0}
+.check{display:flex;gap:10px;align-items:flex-start;font-weight:600;font-size:14px;margin:14px 0}.check input{width:20px;height:20px;margin:1px 0 0;flex:none}
+.divider{border:0;border-top:1px solid var(--line);margin:18px 0}
+.danger-zone{border:1px solid #f1cccc;background:#fffafa;border-radius:12px;padding:14px;margin-top:16px}
+.danger-zone summary{cursor:pointer;font-weight:650;color:var(--red)}
+.exp-list{list-style:none;margin:0;padding:0}.exp-list li{display:flex;justify-content:space-between;gap:10px;padding:9px 0;border-bottom:1px solid var(--line)}.exp-list li:last-child{border-bottom:0}
+.sec-grid{display:grid;align-items:start;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:16px}
 .viewer-overlay{position:fixed;inset:0;z-index:9999;background:rgba(8,20,35,.88);display:flex;align-items:center;justify-content:center;padding:12px}
-.viewer-overlay.hidden{display:none!important}.viewer-panel{background:#fff;color:#182b49;border-radius:16px;width:min(100%,900px);max-height:95vh;overflow:auto;padding:14px}.viewer-head{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-bottom:12px}.viewer-body{min-height:40px}
+.viewer-overlay.hidden{display:none!important}
+.viewer-panel{background:#fff;color:#182b49;border-radius:16px;width:min(100%,900px);max-height:95vh;overflow:auto;padding:14px}
+.viewer-head{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-bottom:12px}.viewer-head strong{overflow-wrap:anywhere}
+@media(max-width:600px){.wrap{padding:12px}header{padding:16px}.mainnav{overflow-x:auto;flex-wrap:nowrap}.navitem{white-space:nowrap;padding:9px 10px}.navhint{display:none}.doc{flex-direction:column}.doc .actions{width:100%}.doc button{flex:1}.report-table{min-width:720px}.report-table td button[data-report-open]{display:block;margin:4px 0}.code-box{grid-template-columns:repeat(2,1fr)}}
+@media print{header,.mainnav,.no-print,#app,#setup,#unlock,#recover{display:none!important}body{background:#fff}.panel{border:0;box-shadow:none}.code-box{background:#fff;border:2px solid #000}.code-box span{color:#000;background:#fff}}
 </style>
 </head>
 <body>
-<header><div class="brand"><h1 class="brand-title"><img src="./icon.svg" alt="MiVault" class="brand-icon"><span>Mi<span class="brand-accent">Vault</span></span></h1><p data-i18n="tagline">Tus documentos, siempre seguros</p></div><div class="actions"><button id="langBtn" class="secondary" type="button" aria-label="Change language">EN</button><button id="installBtn" class="secondary hidden" data-i18n="install">Instalar aplicación</button><button id="lockBtn" class="secondary hidden" data-i18n="lock">Bloquear</button></div></header>
-<nav class="mainnav" aria-label="Main navigation"><button class="navitem active" data-page="vault" data-i18n="navVault">🔐 Caja fuerte</button><button class="navitem" data-page="docs" data-i18n="navDocs">▤ Documentos</button><button class="navitem" data-page="reports" data-i18n="navReports">▥ Reportes</button><button class="navitem" data-page="backup" data-i18n="navBackup">↕ Respaldos</button><span class="navhint" data-i18n="localOnly">Almacenamiento local cifrado</span></nav>
+<header><div class="brand"><h1 class="brand-title"><img src="./icon.svg" alt="" class="brand-icon"><span>Mi<span class="brand-accent">Vault</span></span></h1><p data-i18n="tagline">Tus documentos, siempre seguros</p></div><div class="actions"><button id="langBtn" class="secondary" type="button" aria-label="Change language">EN</button><button id="installBtn" class="secondary hidden" type="button" data-i18n="install">Instalar aplicación</button><button id="lockBtn" class="secondary hidden" type="button" data-i18n="lock">Bloquear</button></div></header>
+<nav id="mainnav" class="mainnav hidden" aria-label="Main navigation"><button class="navitem active" data-page="vault" data-i18n="navVault">🔐 Caja fuerte</button><button class="navitem" data-page="docs" data-i18n="navDocs">▤ Documentos</button><button class="navitem" data-page="reports" data-i18n="navReports">▥ Reportes</button><button class="navitem" data-page="backup" data-i18n="navBackup">↕ Respaldos</button><button class="navitem" data-page="security" data-i18n="navSecurity">🛡 Seguridad</button><span class="navhint" data-i18n="localOnly">Almacenamiento local cifrado</span></nav>
 <main class="wrap">
+
+<!-- Crear caja fuerte -->
 <section id="setup" class="panel lock hidden">
+<img src="./logo-mivault.png" alt="MiVault" class="lock-logo">
 <h2 data-i18n="createVault">Crear tu caja fuerte</h2><p class="muted" data-i18n="createHint">Define una contraseña larga que puedas recordar. Se usa para cifrar los documentos en este dispositivo.</p>
-<div class="field"><label for="newPass" data-i18n="passwordLabel">Contraseña</label><input id="newPass" type="password" minlength="10" autocomplete="new-password" placeholder="Mínimo 10 caracteres"></div>
+<div class="field"><label for="newPass" data-i18n="passwordLabel">Contraseña</label><input id="newPass" type="password" minlength="10" autocomplete="new-password" data-i18n-ph="minChars"><div class="meter" data-meter="newPass"><span></span></div><div class="meter-label" data-meter-label="newPass"></div></div>
 <div class="field"><label for="newPass2" data-i18n="repeatPassword">Repite la contraseña</label><input id="newPass2" type="password" minlength="10" autocomplete="new-password"></div>
-<button id="createBtn" data-i18n="createBtn">Crear caja fuerte</button>
-<p class="foot">La contraseña no se guarda. Si la pierdes, no podremos recuperar los datos cifrados. Guarda un respaldo cifrado en un lugar seguro.</p>
+<button id="createBtn" type="button" data-i18n="createBtn">Crear caja fuerte</button>
+<p id="setupMsg" class="msg hidden" role="alert"></p>
+<p class="foot" data-i18n="setupFoot">Al crearla recibirás un código de recuperación. Con él podrás definir una contraseña nueva si olvidas la actual.</p>
 </section>
+
+<!-- Desbloquear -->
 <section id="unlock" class="panel lock hidden">
+<img src="./logo-mivault.png" alt="MiVault" class="lock-logo">
 <h2 data-i18n="unlockTitle">Desbloquear caja fuerte</h2><p class="muted" data-i18n="unlockHint">Introduce la contraseña para descifrar los documentos guardados en este dispositivo.</p>
+<p id="lockReason" class="msg warn hidden"></p>
+<form id="unlockForm" autocomplete="on" onsubmit="return false">
+<input type="text" name="username" value="MiVault" autocomplete="username" class="hidden" aria-hidden="true" tabindex="-1">
 <div class="field"><label for="pass" data-i18n="passwordLabel">Contraseña</label><input id="pass" type="password" autocomplete="current-password"></div>
-<button id="unlockBtn" data-i18n="unlockBtn">Desbloquear</button><p id="unlockError" class="error hidden"></p>
+<div class="actions"><button id="unlockBtn" type="submit" data-i18n="unlockBtn">Desbloquear</button><button id="forgotBtn" type="button" class="link" data-i18n="forgot">¿Olvidaste tu contraseña?</button></div>
+</form>
+<p id="unlockMsg" class="msg err hidden" role="alert"></p>
 </section>
+
+<!-- Recuperar contraseña -->
+<section id="recover" class="panel lock hidden">
+<h2 data-i18n="recoverTitle">Recuperar acceso</h2>
+<div id="recoverForm">
+<p class="muted" data-i18n="recoverHint">Escribe tu código de recuperación de 32 caracteres y elige una contraseña nueva. Tus documentos se conservan.</p>
+<div class="field"><label for="recCode" data-i18n="recCodeLabel">Código de recuperación</label><input id="recCode" type="text" autocomplete="off" autocapitalize="characters" spellcheck="false" placeholder="XXXX-XXXX-XXXX-XXXX-XXXX-XXXX-XXXX-XXXX" style="font-family:ui-monospace,Menlo,Consolas,monospace;letter-spacing:.04em"></div>
+<div class="field"><label for="recPass" data-i18n="newPasswordLabel">Contraseña nueva</label><input id="recPass" type="password" minlength="10" autocomplete="new-password" data-i18n-ph="minChars"><div class="meter" data-meter="recPass"><span></span></div><div class="meter-label" data-meter-label="recPass"></div></div>
+<div class="field"><label for="recPass2" data-i18n="repeatPassword">Repite la contraseña</label><input id="recPass2" type="password" minlength="10" autocomplete="new-password"></div>
+<div class="actions"><button id="recoverBtn" type="button" data-i18n="recoverBtn">Restablecer contraseña</button><button id="recoverBack" type="button" class="secondary" data-i18n="back">Volver</button></div>
+</div>
+<div id="recoverLegacy" class="hidden"><p class="msg warn" data-i18n="legacyNoCode">Esta caja fuerte se creó con una versión anterior, sin código de recuperación. Si recuerdas la contraseña, desbloquéala una vez y MiVault generará tu código automáticamente.</p><div class="actions" style="margin-top:12px"><button id="recoverBack2" type="button" class="secondary" data-i18n="back">Volver</button></div></div>
+<p id="recoverMsg" class="msg err hidden" role="alert"></p>
+<details class="danger-zone"><summary data-i18n="noCodeTitle">No tengo el código de recuperación</summary>
+<p class="muted" data-i18n="noCodeHint">Sin la contraseña ni el código, nadie puede descifrar los documentos, tampoco MiVault. La única salida es borrar esta caja fuerte, crear una nueva y restaurar un respaldo .dsafe si tienes uno (con su propia contraseña).</p>
+<div class="field"><label for="wipeConfirm" data-i18n="wipeLabel">Escribe BORRAR para confirmar</label><input id="wipeConfirm" type="text" autocomplete="off"></div>
+<button id="wipeBtn" type="button" class="danger solid" data-i18n="wipeBtn">Borrar caja fuerte de este dispositivo</button>
+</details>
+</section>
+
+<!-- Código de recuperación -->
+<section id="codeScreen" class="panel lock hidden">
+<h2 data-i18n="codeTitle">Tu código de recuperación</h2>
+<p id="codeIntro" class="muted"></p>
+<div class="code-box" id="codeBox" aria-label="Código"></div>
+<div class="actions no-print"><button id="codeCopy" type="button" class="secondary" data-i18n="copy">Copiar</button><button id="codeDownload" type="button" class="secondary" data-i18n="downloadTxt">Descargar .txt</button><button id="codePrint" type="button" class="secondary" data-i18n="print">Imprimir</button></div>
+<ul class="tips"><li data-i18n="tip1">Guárdalo fuera de este teléfono: impreso, en un gestor de contraseñas o con una persona de confianza.</li><li data-i18n="tip2">Quien tenga este código y acceso a tu dispositivo puede abrir la caja fuerte. Trátalo como una llave.</li><li data-i18n="tip3">Al usarlo, MiVault genera uno nuevo y el anterior deja de funcionar.</li></ul>
+<label class="check no-print"><input type="checkbox" id="codeAck"><span data-i18n="codeAck">He guardado mi código en un lugar seguro</span></label>
+<button id="codeContinue" type="button" class="no-print" disabled data-i18n="continue">Continuar</button>
+<p id="codeMsg" class="msg ok hidden no-print"></p>
+</section>
+
 <section id="app" class="hidden">
-<div id="notice" class="status">Caja fuerte desbloqueada.</div>
+<div id="notice" class="status"></div>
+
 <div class="app-page active" id="page-vault">
+<section class="panel hidden" id="expPanel"><div class="topline"><h2 data-i18n="expTitle">Próximos vencimientos</h2><span class="count" data-i18n="expHint">Vencidos o que vencen en 30 días</span></div><ul id="expList" class="exp-list"></ul></section>
 <section class="panel" id="addPanel"><div class="topline"><h2 data-i18n="addTitle">Agregar documento</h2><span class="count" data-i18n="encryptedNote">Todo se cifra antes de guardarse</span></div>
 <div class="grid">
-<div class="field"><label for="name" data-i18n="nameLabel">Nombre del documento *</label><input id="name" maxlength="120" placeholder="Ej. Pasaporte"></div>
-<div class="field"><label for="category" data-i18n="categoryLabel">Categoría</label><select id="category"><option>Identificación</option><option>Familia</option><option>Empresa</option><option>Vehículos</option><option>Finanzas</option><option>Salud</option><option>Contratos</option><option>Otros</option></select></div>
-<div class="field"><label for="space" data-i18n="spaceLabel">Espacio</label><select id="space"><option>Personal</option><option>Familia</option><option>Empresa</option></select></div>
+<div class="field"><label for="name" data-i18n="nameLabel">Nombre del documento *</label><input id="name" maxlength="120" data-i18n-ph="namePlaceholder"></div>
+<div class="field"><label for="category" data-i18n="categoryLabel">Categoría</label><select id="category"></select></div>
+<div class="field"><label for="space" data-i18n="spaceLabel">Espacio</label><select id="space"></select></div>
 <div class="field"><label for="expiry" data-i18n="expiryLabel">Fecha de vencimiento</label><input id="expiry" type="date"></div>
 </div>
-<div class="field"><label for="file" data-i18n="filesLabel">Archivos adjuntos (PDF o imágenes; hasta 15 MB cada uno)</label><input id="file" type="file" accept=".pdf,image/*" multiple><div class="actions"><button type="button" class="secondary" id="cameraBtn" data-i18n="cameraBtn">📷 Tomar foto</button><span class="muted" data-i18n="multiPhotoNote">Puedes seleccionar varias fotos a la vez.</span></div><input id="cameraFile" type="file" accept="image/*" capture="environment" class="hidden"><div id="selectedFiles" class="muted" aria-live="polite"></div></div>
-<div class="field"><label for="notes" data-i18n="notesLabel">Notas (opcional)</label><textarea id="notes" rows="2" maxlength="1000" placeholder="Información útil"></textarea></div>
-<div class="actions"><button id="saveBtn" data-i18n="saveBtn">Guardar cifrado</button></div>
+<div class="field"><label for="file" data-i18n="filesLabel">Archivos adjuntos (PDF o imágenes; hasta 15 MB cada uno)</label><input id="file" type="file" accept=".pdf,image/*" multiple><div class="actions"><button type="button" class="secondary" id="cameraBtn" data-i18n="cameraBtn">📷 Tomar foto</button><span class="muted" data-i18n="multiPhotoNote">Puedes tomar varias fotos antes de guardar.</span></div><input id="cameraFile" type="file" accept="image/*" capture="environment" class="hidden"><div id="selectedFiles" class="muted" aria-live="polite"></div></div>
+<div class="field"><label for="notes" data-i18n="notesLabel">Notas (opcional)</label><textarea id="notes" rows="2" maxlength="1000" data-i18n-ph="notesPlaceholder"></textarea></div>
+<div class="actions"><button id="saveBtn" type="button" data-i18n="saveBtn">Guardar cifrado</button></div>
 </section>
 </div>
+
 <div class="app-page" id="page-docs" hidden>
 <section class="panel" id="docsPanel"><div class="topline"><h2 data-i18n="myDocs">Mis documentos</h2><span id="docCount" class="count"></span></div>
-<div class="grid"><div class="field"><label for="search" data-i18n="searchLabel">Buscar</label><input id="search" placeholder="Nombre, categoría o espacio"></div><div class="field"><label for="filter" data-i18n="filterLabel">Filtrar por espacio</label><select id="filter"><option>Todos</option><option>Personal</option><option>Familia</option><option>Empresa</option></select></div></div>
+<div class="grid"><div class="field"><label for="search" data-i18n="searchLabel">Buscar</label><input id="search" data-i18n-ph="searchPlaceholder"></div><div class="field"><label for="filter" data-i18n="filterLabel">Filtrar por espacio</label><select id="filter"></select></div></div>
 <div id="docs"></div>
 </section>
 </div>
+
 <div class="app-page" id="page-reports" hidden>
-<section class="panel" id="reportsPanel"><div class="topline"><h2 data-i18n="reportsTitle">Reportes de consultas</h2><span class="count" data-i18n="reportsHint">Consulta el historial por fecha y tipo de documento</span></div>
-<div class="grid"><div class="field"><label for="reportFrom" data-i18n="fromDate">Desde</label><input id="reportFrom" type="date"></div><div class="field"><label for="reportTo" data-i18n="toDate">Hasta</label><input id="reportTo" type="date"></div><div class="field"><label for="reportSpace" data-i18n="reportSpace">Grupo</label><select id="reportSpace"><option value="all">Todos</option><option value="Personal">Personal</option><option value="Familia">Familia</option><option value="Empresa">Empresa</option></select></div><div class="field"><label for="reportCategory" data-i18n="reportCategory">Tipo de documento</label><select id="reportCategory"><option value="all">Todos</option></select></div></div>
-<div class="actions"><button id="reportSearch" data-i18n="runReport">Consultar reporte</button><button id="reportClear" class="secondary" data-i18n="clearFilters">Limpiar filtros</button><button id="reportCsv" data-i18n="exportReport">Exportar CSV</button></div>
+<section class="panel" id="reportsPanel"><div class="topline"><h2 data-i18n="reportsTitle">Reportes de documentos</h2><span class="count" data-i18n="reportsHint">Busca archivos guardados por fecha, grupo y tipo de documento</span></div>
+<div class="grid"><div class="field"><label for="reportFrom" data-i18n="fromDate">Desde</label><input id="reportFrom" type="date"></div><div class="field"><label for="reportTo" data-i18n="toDate">Hasta</label><input id="reportTo" type="date"></div><div class="field"><label for="reportSpace" data-i18n="reportSpace">Grupo</label><select id="reportSpace"></select></div><div class="field"><label for="reportCategory" data-i18n="reportCategory">Tipo de documento</label><select id="reportCategory"></select></div></div>
+<div class="actions"><button id="reportSearch" type="button" data-i18n="runReport">Consultar reporte</button><button id="reportClear" type="button" class="secondary" data-i18n="clearFilters">Limpiar filtros</button><button id="reportCsv" type="button" data-i18n="exportReport">Exportar CSV</button></div>
 <div id="reportSummary" class="report-summary"></div><div id="reportResults" aria-live="polite"></div>
 <p class="foot" data-i18n="reportPrivacy">La consulta muestra documentos guardados en esta caja fuerte local. Las fechas corresponden a la fecha de creación del registro.</p></section>
 </div>
+
 <div class="app-page" id="page-backup" hidden>
-<section class="panel" id="backupPanel"><h2 data-i18n="backupTitle">Respaldo cifrado</h2><p class="muted">El respaldo se cifra con una contraseña que eliges en el momento. Puedes usar otra contraseña para el archivo de respaldo.</p>
-<div class="grid"><div class="field"><label for="backupPass" data-i18n="backupPassLabel">Contraseña para el respaldo</label><input id="backupPass" type="password" minlength="10" autocomplete="new-password" placeholder="Mínimo 10 caracteres"></div><div class="field"><label for="restoreFile" data-i18n="restoreFileLabel">Archivo de respaldo (.dsafe)</label><input id="restoreFile" type="file" accept=".dsafe,application/json"></div></div>
-<div class="actions"><button id="exportBtn" data-i18n="exportBtn">Crear respaldo cifrado</button><button id="restoreBtn" class="secondary" data-i18n="restoreBtn">Restaurar respaldo seleccionado</button></div>
-<p id="backupStatus" class="foot"></p></section>
-<div class="foot">v0.7 · PWA bilingüe de prueba. El cifrado se realiza en el navegador con AES-GCM-256 y PBKDF2. No hay nube ni sincronización entre dispositivos en esta versión.</div>
+<section class="panel" id="backupPanel"><h2 data-i18n="backupTitle">Respaldo cifrado</h2><p class="muted" data-i18n="backupHint">El respaldo se cifra con una contraseña que eliges en el momento. Puede ser distinta a la de la caja fuerte. El código de recuperación no sirve para abrir respaldos.</p>
+<div class="grid"><div class="field"><label for="backupPass" data-i18n="backupPassLabel">Contraseña para el respaldo</label><input id="backupPass" type="password" minlength="10" autocomplete="new-password" data-i18n-ph="minChars"></div><div class="field"><label for="restoreFile" data-i18n="restoreFileLabel">Archivo de respaldo (.dsafe)</label><input id="restoreFile" type="file" accept=".dsafe,.json,application/json"></div></div>
+<div class="actions"><button id="exportBtn" type="button" data-i18n="exportBtn">Crear respaldo cifrado</button><button id="restoreBtn" type="button" class="secondary" data-i18n="restoreBtn">Restaurar respaldo seleccionado</button></div>
+<p id="backupMsg" class="msg hidden" role="status"></p></section>
+</div>
+
+<div class="app-page" id="page-security" hidden>
+<div class="sec-grid">
+<section class="panel"><h2 data-i18n="changePassTitle">Cambiar contraseña</h2>
+<div class="field"><label for="curPass" data-i18n="currentPassword">Contraseña actual</label><input id="curPass" type="password" autocomplete="current-password"></div>
+<div class="field"><label for="chgPass" data-i18n="newPasswordLabel">Contraseña nueva</label><input id="chgPass" type="password" minlength="10" autocomplete="new-password" data-i18n-ph="minChars"><div class="meter" data-meter="chgPass"><span></span></div><div class="meter-label" data-meter-label="chgPass"></div></div>
+<div class="field"><label for="chgPass2" data-i18n="repeatPassword">Repite la contraseña</label><input id="chgPass2" type="password" minlength="10" autocomplete="new-password"></div>
+<button id="changePassBtn" type="button" data-i18n="changePassBtn">Cambiar contraseña</button>
+<p id="changePassMsg" class="msg hidden" role="status"></p>
+</section>
+<section class="panel"><h2 data-i18n="recoveryTitle">Código de recuperación</h2>
+<p id="recoveryInfo" class="muted"></p>
+<p class="muted" data-i18n="regenHint">Si perdiste el código o crees que alguien más lo vio, genera uno nuevo. El anterior dejará de funcionar.</p>
+<div class="field"><label for="regenPass" data-i18n="currentPassword">Contraseña actual</label><input id="regenPass" type="password" autocomplete="current-password"></div>
+<button id="regenBtn" type="button" class="secondary" data-i18n="regenBtn">Generar código nuevo</button>
+<p id="regenMsg" class="msg hidden" role="status"></p>
+</section>
+<section class="panel"><h2 data-i18n="autoLockTitle">Bloqueo automático</h2>
+<p class="muted" data-i18n="autoLockHint">La caja fuerte se bloquea sola cuando no la usas durante este tiempo.</p>
+<div class="field"><label for="autoLock" data-i18n="autoLockLabel">Bloquear tras inactividad</label><select id="autoLock"></select></div>
+</section>
+</div>
+<div class="foot" data-i18n="versionFoot">v0.17 · PWA bilingüe de prueba. Cifrado en el navegador con AES-GCM-256 y PBKDF2-SHA-256. Sin nube ni sincronización entre dispositivos.</div>
 </div>
 </section>
 </main>
+
+<div id="confirmBox" class="viewer-overlay hidden" role="alertdialog" aria-modal="true" aria-labelledby="confirmText"><div class="viewer-panel" style="max-width:420px"><p id="confirmText" style="margin:0 0 16px;font-weight:600"></p><div class="actions"><button type="button" id="confirmOk" class="danger solid" data-i18n="confirmYes">Sí, continuar</button><button type="button" id="confirmCancel" class="secondary" data-i18n="cancel">Cancelar</button></div></div></div>
+<div id="fileViewer" class="viewer-overlay hidden" role="dialog" aria-modal="true" aria-labelledby="fileViewerTitle"><div class="viewer-panel"><div class="viewer-head"><strong id="fileViewerTitle"></strong><div class="actions"><button type="button" id="fileViewerDownload" class="secondary" data-i18n="downloadFile">Descargar</button><button type="button" id="fileViewerClose" class="secondary" data-i18n="close">Cerrar</button></div></div><div id="fileViewerBody" class="viewer-body"></div></div></div>
+
 <script>
 'use strict';
 const $=id=>document.getElementById(id);
-const DB='documentos-seguros-v04', STORE='vault', KEY='main';
-let db, vaultKey=null, vaultSalt=null, vault={documents:[]}, installPrompt=null, cameraFiles=[];
-const enc=new TextEncoder(), dec=new TextDecoder();
+const DB='documentos-seguros-v04',STORE='vault',KEY='main',ITER=310000;
+const subtle=crypto.subtle,enc=new TextEncoder(),dec=new TextDecoder();
+const CATEGORIES=[['Identificación','categoryId'],['Familia','categoryFamily'],['Empresa','categoryBusiness'],['Vehículos','categoryVehicles'],['Finanzas','categoryFinance'],['Salud','categoryHealth'],['Contratos','categoryContracts'],['Otros','categoryOther']];
+const SPACES=[['Personal','spacePersonal'],['Familia','spaceFamily'],['Empresa','spaceBusiness']];
+let db,stored=null,vaultKey=null,vault={documents:[],consultations:[]},installPrompt=null,cameraFiles=[],viewerUrl=null,viewerFile=null,currentCode=null,codeNext=null,lastActivity=Date.now(),currentScreen=null;
+
+/* ---------- Traducciones ---------- */
+const translations={
+es:{tagline:'Tus documentos, siempre seguros',install:'Instalar aplicación',lock:'Bloquear',navVault:'🔐 Caja fuerte',navDocs:'▤ Documentos',navReports:'▥ Reportes',navBackup:'↕ Respaldos',navSecurity:'🛡 Seguridad',localOnly:'Almacenamiento local cifrado',
+createVault:'Crear tu caja fuerte',createHint:'Define una contraseña larga que puedas recordar. Se usa para cifrar los documentos en este dispositivo.',passwordLabel:'Contraseña',repeatPassword:'Repite la contraseña',createBtn:'Crear caja fuerte',setupFoot:'Al crearla recibirás un código de recuperación. Con él podrás definir una contraseña nueva si olvidas la actual.',minChars:'Mínimo 10 caracteres',
+unlockTitle:'Desbloquear caja fuerte',unlockHint:'Introduce la contraseña para descifrar los documentos guardados en este dispositivo.',unlockBtn:'Desbloquear',forgot:'¿Olvidaste tu contraseña?',
+recoverTitle:'Recuperar acceso',recoverHint:'Escribe tu código de recuperación de 32 caracteres y elige una contraseña nueva. Tus documentos se conservan.',recCodeLabel:'Código de recuperación',newPasswordLabel:'Contraseña nueva',recoverBtn:'Restablecer contraseña',back:'Volver',legacyNoCode:'Esta caja fuerte se creó con una versión anterior, sin código de recuperación. Si recuerdas la contraseña, desbloquéala una vez y MiVault generará tu código automáticamente.',noCodeTitle:'No tengo el código de recuperación',noCodeHint:'Sin la contraseña ni el código, nadie puede descifrar los documentos, tampoco MiVault. La única salida es borrar esta caja fuerte, crear una nueva y restaurar un respaldo .dsafe si tienes uno (con su propia contraseña).',wipeLabel:'Escribe BORRAR para confirmar',wipeWord:'BORRAR',wipeBtn:'Borrar caja fuerte de este dispositivo',wipeConfirm:'Se eliminarán de forma permanente todos los documentos de este dispositivo. ¿Continuar?',wipeType:'Escribe BORRAR exactamente para confirmar.',wiped:'Caja fuerte eliminada. Crea una nueva o restaura un respaldo después.',
+codeTitle:'Tu código de recuperación',codeNew:'Guarda este código. Si olvidas tu contraseña, es la única forma de recuperar el acceso a tus documentos.',codeMigrated:'Activamos la recuperación de contraseña en tu caja fuerte. Guarda este código: si olvidas tu contraseña, es la única forma de recuperar el acceso.',codeRotated:'Contraseña restablecida. Tu código anterior ya no sirve; este es tu código nuevo. Guárdalo antes de continuar.',codeRegenerated:'Código nuevo generado. El anterior ya no funciona.',copy:'Copiar',copied:'Código copiado.',downloadTxt:'Descargar .txt',print:'Imprimir',tip1:'Guárdalo fuera de este teléfono: impreso, en un gestor de contraseñas o con una persona de confianza.',tip2:'Quien tenga este código y acceso a tu dispositivo puede abrir la caja fuerte. Trátalo como una llave.',tip3:'Al usarlo, MiVault genera uno nuevo y el anterior deja de funcionar.',codeAck:'He guardado mi código en un lugar seguro',continue:'Continuar',codeFileTitle:'MiVault — Código de recuperación',codeFileBody:'Usa este código en "¿Olvidaste tu contraseña?" para definir una contraseña nueva.\nGuárdalo en un lugar seguro y no lo compartas.',codeFileDate:'Generado',
+expTitle:'Próximos vencimientos',expHint:'Vencidos o que vencen en 30 días',expiredTag:'Vencido',soonTag:'Vence pronto',daysLeft:'en {n} días',today:'hoy',daysAgo:'hace {n} días',
+addTitle:'Agregar documento',encryptedNote:'Todo se cifra antes de guardarse',nameLabel:'Nombre del documento *',namePlaceholder:'Ej. Pasaporte',categoryLabel:'Categoría',spaceLabel:'Espacio',expiryLabel:'Fecha de vencimiento',filesLabel:'Archivos adjuntos (PDF o imágenes; hasta 15 MB cada uno)',cameraBtn:'📷 Tomar foto',multiPhotoNote:'Puedes tomar varias fotos antes de guardar.',notesLabel:'Notas (opcional)',notesPlaceholder:'Información útil',saveBtn:'Guardar cifrado',
+myDocs:'Mis documentos',searchLabel:'Buscar',searchPlaceholder:'Nombre, categoría o espacio',filterLabel:'Filtrar por espacio',docCount:'documento(s)',expires:'Vence',noExpiry:'Sin vencimiento',filesCount:'archivo(s)',delete:'Eliminar',emptyDocs:'No hay documentos que coincidan. Agrega el primero en Caja fuerte.',confirmDelete:'¿Eliminar este documento de la caja fuerte?',deleted:'Documento eliminado y caja fuerte actualizada.',enterName:'Escribe el nombre del documento.',fileTooLarge:'Cada archivo debe pesar 15 MB o menos.',saved:'Documento guardado cifrado en este dispositivo.',saveFailed:'No se pudo guardar el documento.',selectFiles:'Archivos seleccionados',
+reportsTitle:'Reportes de documentos',reportsHint:'Busca archivos guardados por fecha, grupo y tipo de documento',fromDate:'Desde',toDate:'Hasta',reportCategory:'Tipo de documento',reportSpace:'Grupo',clearFilters:'Limpiar filtros',runReport:'Consultar reporte',exportReport:'Exportar CSV',reportPrivacy:'La consulta muestra documentos guardados en esta caja fuerte local. Las fechas corresponden a la fecha de creación del registro.',filesFound:'documentos encontrados',noFilesFound:'No hay documentos guardados para los filtros seleccionados.',dateTime:'Fecha',document:'Documento',openFile:'Abrir archivo',attachmentsCol:'Adjuntos',file:'Archivo',csvName:'reporte-documentos.csv',
+unsupportedPreview:'Este tipo de archivo no se puede previsualizar aquí.',downloadFile:'Descargar',close:'Cerrar',
+backupTitle:'Respaldo cifrado',backupHint:'El respaldo se cifra con una contraseña que eliges en el momento. Puede ser distinta a la de la caja fuerte. El código de recuperación no sirve para abrir respaldos.',backupPassLabel:'Contraseña para el respaldo',restoreFileLabel:'Archivo de respaldo (.dsafe)',exportBtn:'Crear respaldo cifrado',restoreBtn:'Restaurar respaldo seleccionado',backupDone:'Respaldo cifrado creado. Conserva su contraseña: no se puede recuperar si la olvidas.',backupFailed:'No se pudo crear el respaldo.',backupPassShort:'Escribe una contraseña de respaldo de al menos 10 caracteres.',selectBackup:'Selecciona un archivo .dsafe.',enterBackupPass:'Escribe la contraseña del respaldo.',confirmRestore:'La restauración reemplazará los documentos de esta caja fuerte. ¿Continuar?',wrongRestore:'No se pudo restaurar: contraseña incorrecta o archivo inválido.',restoreDone:'Respaldo restaurado y guardado cifrado en este dispositivo.',
+changePassTitle:'Cambiar contraseña',currentPassword:'Contraseña actual',changePassBtn:'Cambiar contraseña',passChanged:'Contraseña actualizada. Tu código de recuperación sigue siendo válido.',recoveryTitle:'Código de recuperación',recoveryActive:'Recuperación activa. Código generado el {d}.',regenHint:'Si perdiste el código o crees que alguien más lo vio, genera uno nuevo. El anterior dejará de funcionar.',regenBtn:'Generar código nuevo',autoLockTitle:'Bloqueo automático',autoLockHint:'La caja fuerte se bloquea sola cuando no la usas durante este tiempo.',autoLockLabel:'Bloquear tras inactividad',never:'Nunca',minutes:'{n} min',autoLockSaved:'Bloqueo automático actualizado.',versionFoot:'v0.17 · PWA bilingüe de prueba. Cifrado en el navegador con AES-GCM-256 y PBKDF2-SHA-256. Sin nube ni sincronización entre dispositivos.',
+passShort:'Usa una contraseña de al menos 10 caracteres.',passMismatch:'Las contraseñas no coinciden.',passSame:'La contraseña nueva debe ser distinta a la actual.',wrongPass:'Contraseña incorrecta.',wrongPassOrData:'Contraseña incorrecta o datos dañados.',enterPass:'Escribe tu contraseña.',tooMany:'Demasiados intentos. Espera {s} s antes de volver a intentar.',codeInvalid:'El código debe tener 32 letras y números (los guiones son opcionales).',codeWrong:'El código de recuperación no es correcto para esta caja fuerte.',working:'Procesando…',
+created:'Caja fuerte creada. Te recomendamos crear también un respaldo cifrado en Respaldos.',unlocked:'Caja fuerte desbloqueada.',recovered:'Acceso recuperado con tu contraseña nueva.',lockedIdle:'Se bloqueó por inactividad.',lockedManual:'Caja fuerte bloqueada.',createFailed:'No se pudo crear la caja fuerte. Abre la app desde HTTPS o localhost.',needSecure:'Abre la aplicación desde HTTPS o localhost para activar el almacenamiento seguro.',genericError:'Ocurrió un error. Inténtalo de nuevo.',installHelp:'En iPhone: abre en Safari, toca Compartir y luego “Añadir a pantalla de inicio”. En Android, usa el menú del navegador y “Instalar aplicación”.',
+confirmYes:'Sí, continuar',cancel:'Cancelar',noDownloadEmbed:'La descarga no está disponible en esta vista. Copia el código o usa la app instalada desde tu sitio HTTPS.',noDownloadType:'Este tipo de archivo no se puede descargar desde esta vista.',strength0:'Muy débil',strength1:'Débil',strength2:'Aceptable',strength3:'Buena',strength4:'Fuerte',show:'Ver',hide:'Ocultar',
+categoryId:'Identificación',categoryFamily:'Familia',categoryBusiness:'Empresa',categoryVehicles:'Vehículos',categoryFinance:'Finanzas',categoryHealth:'Salud',categoryContracts:'Contratos',categoryOther:'Otros',spacePersonal:'Personal',spaceFamily:'Familia',spaceBusiness:'Empresa',all:'Todos'},
+en:{tagline:'Your documents, always secure',install:'Install app',lock:'Lock',navVault:'🔐 Vault',navDocs:'▤ Documents',navReports:'▥ Reports',navBackup:'↕ Backups',navSecurity:'🛡 Security',localOnly:'Encrypted local storage',
+createVault:'Create your vault',createHint:'Choose a long password you can remember. It encrypts documents on this device.',passwordLabel:'Password',repeatPassword:'Repeat password',createBtn:'Create vault',setupFoot:'You will receive a recovery code. With it you can set a new password if you forget the current one.',minChars:'At least 10 characters',
+unlockTitle:'Unlock vault',unlockHint:'Enter your password to decrypt documents stored on this device.',unlockBtn:'Unlock',forgot:'Forgot your password?',
+recoverTitle:'Recover access',recoverHint:'Enter your 32-character recovery code and choose a new password. Your documents are kept.',recCodeLabel:'Recovery code',newPasswordLabel:'New password',recoverBtn:'Reset password',back:'Back',legacyNoCode:'This vault was created with an earlier version that had no recovery code. If you remember the password, unlock it once and MiVault will generate your code automatically.',noCodeTitle:'I don\'t have the recovery code',noCodeHint:'Without the password or the code nobody can decrypt the documents, not even MiVault. The only option is to erase this vault, create a new one and restore a .dsafe backup if you have one (with its own password).',wipeLabel:'Type DELETE to confirm',wipeWord:'DELETE',wipeBtn:'Erase vault from this device',wipeConfirm:'All documents on this device will be permanently deleted. Continue?',wipeType:'Type DELETE exactly to confirm.',wiped:'Vault erased. Create a new one or restore a backup afterwards.',
+codeTitle:'Your recovery code',codeNew:'Save this code. If you forget your password, it is the only way to regain access to your documents.',codeMigrated:'We turned on password recovery for your vault. Save this code: if you forget your password, it is the only way to regain access.',codeRotated:'Password reset. Your previous code no longer works; this is your new code. Save it before continuing.',codeRegenerated:'New code generated. The previous one no longer works.',copy:'Copy',copied:'Code copied.',downloadTxt:'Download .txt',print:'Print',tip1:'Keep it off this phone: printed, in a password manager or with someone you trust.',tip2:'Anyone with this code and access to your device can open the vault. Treat it like a key.',tip3:'When you use it, MiVault creates a new one and the old one stops working.',codeAck:'I have saved my code somewhere safe',continue:'Continue',codeFileTitle:'MiVault — Recovery code',codeFileBody:'Use this code under "Forgot your password?" to set a new password.\nKeep it somewhere safe and do not share it.',codeFileDate:'Generated',
+expTitle:'Upcoming expirations',expHint:'Expired or expiring within 30 days',expiredTag:'Expired',soonTag:'Expiring soon',daysLeft:'in {n} days',today:'today',daysAgo:'{n} days ago',
+addTitle:'Add document',encryptedNote:'Everything is encrypted before saving',nameLabel:'Document name *',namePlaceholder:'e.g. Passport',categoryLabel:'Category',spaceLabel:'Workspace',expiryLabel:'Expiration date',filesLabel:'Attachments (PDFs or images; up to 15 MB each)',cameraBtn:'📷 Take photo',multiPhotoNote:'You can take several photos before saving.',notesLabel:'Notes (optional)',notesPlaceholder:'Useful information',saveBtn:'Save encrypted',
+myDocs:'My documents',searchLabel:'Search',searchPlaceholder:'Name, category or workspace',filterLabel:'Filter by workspace',docCount:'document(s)',expires:'Expires',noExpiry:'No expiration',filesCount:'file(s)',delete:'Delete',emptyDocs:'No matching documents. Add your first one under Vault.',confirmDelete:'Delete this document from the vault?',deleted:'Document deleted and vault updated.',enterName:'Enter a document name.',fileTooLarge:'Each file must be 15 MB or smaller.',saved:'Document saved encrypted on this device.',saveFailed:'Could not save the document.',selectFiles:'Selected files',
+reportsTitle:'Document reports',reportsHint:'Find saved files by date, group and document type',fromDate:'From',toDate:'To',reportCategory:'Document type',reportSpace:'Group',clearFilters:'Clear filters',runReport:'Run report',exportReport:'Export CSV',reportPrivacy:'The report lists documents stored in this local vault. Dates are the record creation dates.',filesFound:'documents found',noFilesFound:'No saved documents match these filters.',dateTime:'Date',document:'Document',openFile:'Open file',attachmentsCol:'Attachments',file:'File',csvName:'document-report.csv',
+unsupportedPreview:'This file type cannot be previewed here.',downloadFile:'Download',close:'Close',
+backupTitle:'Encrypted backup',backupHint:'The backup is encrypted with a password you choose now. It can differ from the vault password. The recovery code cannot open backups.',backupPassLabel:'Backup password',restoreFileLabel:'Backup file (.dsafe)',exportBtn:'Create encrypted backup',restoreBtn:'Restore selected backup',backupDone:'Encrypted backup created. Keep its password safe; it cannot be recovered if lost.',backupFailed:'Could not create the backup.',backupPassShort:'Enter a backup password of at least 10 characters.',selectBackup:'Choose a .dsafe file.',enterBackupPass:'Enter the backup password.',confirmRestore:'Restoring will replace the documents in this vault. Continue?',wrongRestore:'Could not restore: wrong password or invalid file.',restoreDone:'Backup restored and saved encrypted on this device.',
+changePassTitle:'Change password',currentPassword:'Current password',changePassBtn:'Change password',passChanged:'Password updated. Your recovery code is still valid.',recoveryTitle:'Recovery code',recoveryActive:'Recovery is on. Code generated on {d}.',regenHint:'If you lost the code or think someone else saw it, generate a new one. The old one will stop working.',regenBtn:'Generate new code',autoLockTitle:'Auto-lock',autoLockHint:'The vault locks itself when you are inactive for this long.',autoLockLabel:'Lock after inactivity',never:'Never',minutes:'{n} min',autoLockSaved:'Auto-lock updated.',versionFoot:'v0.17 · Bilingual test PWA. In-browser encryption with AES-GCM-256 and PBKDF2-SHA-256. No cloud or cross-device sync.',
+passShort:'Use a password of at least 10 characters.',passMismatch:'Passwords do not match.',passSame:'The new password must differ from the current one.',wrongPass:'Wrong password.',wrongPassOrData:'Wrong password or damaged data.',enterPass:'Enter your password.',tooMany:'Too many attempts. Wait {s} s before trying again.',codeInvalid:'The code must have 32 letters and digits (dashes are optional).',codeWrong:'That recovery code does not match this vault.',working:'Working…',
+created:'Vault created. We recommend also creating an encrypted backup under Backups.',unlocked:'Vault unlocked.',recovered:'Access recovered with your new password.',lockedIdle:'Locked due to inactivity.',lockedManual:'Vault locked.',createFailed:'Could not create the vault. Open the app over HTTPS or localhost.',needSecure:'Open the app over HTTPS or localhost to enable secure storage.',genericError:'Something went wrong. Please try again.',installHelp:'On iPhone: open in Safari, tap Share, then “Add to Home Screen”. On Android, use the browser menu and “Install app”.',
+confirmYes:'Yes, continue',cancel:'Cancel',noDownloadEmbed:'Downloading is not available in this view. Copy the code or use the app installed from your HTTPS site.',noDownloadType:'This file type cannot be downloaded from this view.',strength0:'Very weak',strength1:'Weak',strength2:'Fair',strength3:'Good',strength4:'Strong',show:'Show',hide:'Hide',
+categoryId:'Identification',categoryFamily:'Family',categoryBusiness:'Business',categoryVehicles:'Vehicles',categoryFinance:'Finance',categoryHealth:'Health',categoryContracts:'Contracts',categoryOther:'Other',spacePersonal:'Personal',spaceFamily:'Family',spaceBusiness:'Business',all:'All'}
+};
+let lang=lsGet('ds-lang')||'es';
+function lsGet(k){try{return localStorage.getItem(k)}catch(e){return null}}
+function lsSet(k,v){try{localStorage.setItem(k,v)}catch(e){}}
+function tr(k,vars){let s=(translations[lang]||translations.es)[k]??translations.es[k]??k;if(vars)for(const [a,b] of Object.entries(vars))s=s.replace('{'+a+'}',b);return s}
+function trCategory(v){const m={'Identificación':'categoryId','Identification':'categoryId','Familia':'categoryFamily','Family':'categoryFamily','Empresa':'categoryBusiness','Business':'categoryBusiness','Vehículos':'categoryVehicles','Vehicles':'categoryVehicles','Finanzas':'categoryFinance','Finance':'categoryFinance','Salud':'categoryHealth','Health':'categoryHealth','Contratos':'categoryContracts','Contracts':'categoryContracts','Otros':'categoryOther','Other':'categoryOther'};return m[v]?tr(m[v]):v}
+function trSpace(v){const m={'Personal':'spacePersonal','Familia':'spaceFamily','Family':'spaceFamily','Empresa':'spaceBusiness','Business':'spaceBusiness'};return m[v]?tr(m[v]):v}
+const locale=()=>lang==='es'?'es-SV':'en-US';
+
+/* ---------- Utilidades ---------- */
 function b64(bytes){let s='';for(let i=0;i<bytes.length;i+=0x8000)s+=String.fromCharCode(...bytes.subarray(i,i+0x8000));return btoa(s)}
 function un64(s){return Uint8Array.from(atob(s),c=>c.charCodeAt(0))}
-function openDB(){return new Promise((resolve,reject)=>{const r=indexedDB.open(DB,1);r.onupgradeneeded=()=>r.result.createObjectStore(STORE);r.onsuccess=()=>{db=r.result;resolve()};r.onerror=()=>reject(r.error)})}
-function getStored(){return new Promise((resolve,reject)=>{const r=db.transaction(STORE,'readonly').objectStore(STORE).get(KEY);r.onsuccess=()=>resolve(r.result||null);r.onerror=()=>reject(r.error)})}
-function putStored(v){return new Promise((resolve,reject)=>{const tx=db.transaction(STORE,'readwrite');tx.objectStore(STORE).put(v,KEY);tx.oncomplete=resolve;tx.onerror=()=>reject(tx.error)})}
-function derive(password,salt){return crypto.subtle.importKey('raw',enc.encode(password),'PBKDF2',false,['deriveKey']).then(k=>crypto.subtle.deriveKey({name:'PBKDF2',salt,iterations:310000,hash:'SHA-256'},k,{name:'AES-GCM',length:256},false,['encrypt','decrypt']))}
-async function encryptObject(obj,key){const iv=crypto.getRandomValues(new Uint8Array(12));const data=await crypto.subtle.encrypt({name:'AES-GCM',iv},key,enc.encode(JSON.stringify(obj)));return {iv:b64(iv),data:b64(new Uint8Array(data))}}
-async function decryptObject(box,key){const data=await crypto.subtle.decrypt({name:'AES-GCM',iv:un64(box.iv)},key,un64(box.data));return JSON.parse(dec.decode(data))}
-async function persist(){const box=await encryptObject(vault,vaultKey);await putStored({format:1,salt:b64(vaultSalt),box})}
-function show(which){['setup','unlock','app'].forEach(id=>$(id).classList.toggle('hidden',id!==which));$('lockBtn').classList.toggle('hidden',which!=='app');if(which==='app')navigatePage('vault')}
-function notify(msg,err=false){$('notice').textContent=msg;$('notice').className=err?'status error':'status'}
-function bytesFromFile(file){return new Promise((resolve,reject)=>{const r=new FileReader();r.onload=()=>resolve(b64(new Uint8Array(r.result)));r.onerror=()=>reject(r.error);r.readAsArrayBuffer(file)})}
-function fileFromAttachment(file){if(!file)return;const bytes=un64(file.data);const blob=new Blob([bytes],{type:file.type||'application/octet-stream'});const url=URL.createObjectURL(blob);const a=document.createElement('a');a.href=url;a.download=file.name||'documento';a.click();setTimeout(()=>URL.revokeObjectURL(url),2000)} let viewerUrl=null;function closeFileViewer(){const modal=$('fileViewer');if(modal)modal.classList.add('hidden');const body=$('fileViewerBody');if(body)body.innerHTML='';if(viewerUrl){URL.revokeObjectURL(viewerUrl);viewerUrl=null}}function openAttachment(file){if(!file)return;const bytes=un64(file.data);const type=file.type||'application/octet-stream';const blob=new Blob([bytes],{type});if(viewerUrl)URL.revokeObjectURL(viewerUrl);viewerUrl=URL.createObjectURL(blob);$('fileViewerTitle').textContent=file.name||tr('file');const body=$('fileViewerBody');body.innerHTML='';if(type==='application/pdf'){const frame=document.createElement('iframe');frame.src=viewerUrl;frame.title=file.name||'PDF';frame.style.cssText='width:100%;height:70vh;border:0;background:white';body.appendChild(frame)}else if(type.startsWith('image/')){const img=document.createElement('img');img.src=viewerUrl;img.alt=file.name||tr('file');img.style.cssText='display:block;max-width:100%;max-height:70vh;margin:auto;object-fit:contain';body.appendChild(img)}else{const p=document.createElement('p');p.textContent=tr('unsupportedPreview');body.appendChild(p);const a=document.createElement('a');a.href=viewerUrl;a.download=file.name||'documento';a.textContent=tr('downloadFile');a.className='button';body.appendChild(a)}$('fileViewer').classList.remove('hidden')}
+const rand=n=>crypto.getRandomValues(new Uint8Array(n));
 function esc(s){return String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
-function render(){const q=$('search').value.toLowerCase(),f=$('filter').value;const arr=vault.documents.filter(d=>(f==='Todos'||f==='All'||d.space===f)&&[d.name,d.category,d.space,d.notes].join(' ').toLowerCase().includes(q)).sort((a,b)=>b.createdAt.localeCompare(a.createdAt));$('docCount').textContent=`${arr.length} ${tr('docCount')}`;$('docs').innerHTML=arr.length?arr.map(d=>{const files=d.files||(d.file?[d.file]:[]);return `<article class="doc"><div><h3>${esc(d.name)}</h3><span class="tag">${esc(trCategory(d.category))}</span><span class="tag">${esc(trSpace(d.space))}</span><div class="muted">${d.expiry?tr('expires')+': '+esc(d.expiry):tr('noExpiry')}${files.length?' · '+files.length+' '+tr('attachments'):''}</div>${d.notes?'<p>'+esc(d.notes)+'</p>':''}<div class="actions">${files.map((x,i)=>`<button class="secondary" data-file="${esc(d.id)}" data-index="${i}">↓ ${esc(x.name)}</button>`).join('')}</div></div><div class="actions"><button class="danger" data-delete="${esc(d.id)}">${tr('delete')}</button></div></article>`}).join(''):`<p class="muted">${tr('emptyDocs')}</p>`;document.querySelectorAll('[data-file]').forEach(b=>b.onclick=async()=>{const d=vault.documents.find(d=>d.id===b.dataset.file),files=d.files||(d.file?[d.file]:[]),attachment=files[Number(b.dataset.index)];if(!d||!attachment)return;vault.consultations=vault.consultations||[];vault.consultations.push({id:crypto.randomUUID(),documentId:d.id,name:d.name,category:d.category||'Otros',fileName:attachment.name||'',at:new Date().toISOString()});try{await persist();renderReports()}catch(e){}fileFromAttachment(attachment)});document.querySelectorAll('[data-delete]').forEach(b=>b.onclick=async()=>{if(confirm(tr('confirmDelete'))){vault.documents=vault.documents.filter(d=>d.id!==b.dataset.delete);await persist();render();renderReports();notify(tr('deleted'))}});renderReports()}
-function reportLocalDay(value){if(!value)return '';const d=new Date(value);if(Number.isNaN(d.getTime()))return String(value).slice(0,10);return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`}
-function getFilteredDocuments(){const from=$('reportFrom').value,to=$('reportTo').value,cat=$('reportCategory').value,space=$('reportSpace').value;return (vault.documents||[]).filter(d=>{const day=reportLocalDay(d.createdAt);return (!from||day>=from)&&(!to||day<=to)&&(cat==='all'||d.category===cat)&&(space==='all'||d.space===space)}).sort((a,b)=>new Date(b.createdAt||0)-new Date(a.createdAt||0))}
-function renderReports(){if(!$('reportResults'))return;const docs=getFilteredDocuments();$('reportSummary').innerHTML=`<div class="report-stat">${docs.length} ${tr('filesFound')}</div>`;if(!docs.length){$('reportResults').innerHTML=`<p class="muted">${tr('noFilesFound')}</p>`;return}$('reportResults').innerHTML=`<div style="overflow-x:auto"><table class="report-table"><thead><tr><th>${tr('dateTime')}</th><th>${tr('document')}</th><th>${tr('reportSpace')}</th><th>${tr('reportCategory')}</th><th>${tr('attachments')}</th><th>${tr('openFile')}</th></tr></thead><tbody>${docs.map(d=>{const fs=d.files||(d.file?[d.file]:[]);return `<tr><td>${esc(d.createdAt?new Date(d.createdAt).toLocaleDateString(lang==='es'?'es-SV':'en-US'):'—')}</td><td><strong>${esc(d.name)}</strong></td><td>${esc(trSpace(d.space||''))}</td><td>${esc(trCategory(d.category||''))}</td><td>${fs.length?fs.map(f=>esc(f.name||tr('file'))).join('<br>'): '—'}</td><td>${fs.length?fs.map((f,i)=>`<button type="button" data-report-open="${esc(d.id)}" data-report-index="${i}">${tr('openFile')}</button>`).join('<br>'):'—'}</td></tr>`}).join('')}</tbody></table></div>`;document.querySelectorAll('[data-report-open]').forEach(b=>b.onclick=()=>{const d=vault.documents.find(x=>String(x.id)===b.dataset.reportOpen);const fs=d&&(d.files||(d.file?[d.file]:[]));if(fs&&fs[Number(b.dataset.reportIndex)])openAttachment(fs[Number(b.dataset.reportIndex)])});$('fileViewerClose').onclick=closeFileViewer;$('fileViewer').onclick=e=>{if(e.target===$('fileViewer'))closeFileViewer()}}
+function say(id,text,type='err'){const el=$(id);if(!el)return;if(!text){el.classList.add('hidden');el.textContent='';return}el.textContent=text;el.className='msg '+type;el.classList.remove('hidden')}
+function askConfirm(text){return new Promise(res=>{const box=$('confirmBox');$('confirmText').textContent=text;box.classList.remove('hidden');$('confirmOk').focus();const done=v=>{box.classList.add('hidden');$('confirmOk').onclick=$('confirmCancel').onclick=null;res(v)};$('confirmOk').onclick=()=>done(true);$('confirmCancel').onclick=()=>done(false)})}
+const EMBED=(()=>{try{return window.self!==window.top}catch(e){return true}})();
+function notify(text,err=false){$('notice').textContent=text;$('notice').className=err?'status error':'status'}
+async function busy(btn,fn){if(btn.disabled)return;const label=btn.textContent;btn.disabled=true;btn.textContent=tr('working');try{return await fn()}finally{btn.disabled=false;btn.textContent=label}}
+function embedMsg(m,type){if(currentScreen==='codeScreen')say('codeMsg',m,type);else if(currentScreen==='app'&&!$('page-backup').hidden)say('backupMsg',m,type);else notify(m,type!=='ok')}
+let dlNs;async function embedSave(blob,name){if(/\.dsafe$/i.test(name))name+='.json';try{if(dlNs===undefined)dlNs=window.claude&&window.claude.use?await window.claude.use('downloads'):null}catch(e){dlNs=null}if(!dlNs){embedMsg(tr('noDownloadEmbed'),'warn');return}try{await dlNs.save({filename:name,data:blob})}catch(e){if(e&&e.code==='declined')return;embedMsg(e&&e.code==='rejected_extension'?tr('noDownloadType'):tr('noDownloadEmbed'),'warn')}}
+function download(blob,name){if(EMBED){embedSave(blob,name);return}const url=URL.createObjectURL(blob),a=document.createElement('a');a.href=url;a.download=name;document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(url),2000)}
+function localDay(value){const d=value?new Date(value):new Date();if(Number.isNaN(d.getTime()))return String(value).slice(0,10);return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`}
+function docFiles(d){return d.files||(d.file?[d.file]:[])}
+
+/* ---------- IndexedDB ---------- */
+function openDB(){return new Promise((res,rej)=>{const r=indexedDB.open(DB,1);r.onupgradeneeded=()=>r.result.createObjectStore(STORE);r.onsuccess=()=>{db=r.result;res()};r.onerror=()=>rej(r.error)})}
+function getStored(){return new Promise((res,rej)=>{const r=db.transaction(STORE,'readonly').objectStore(STORE).get(KEY);r.onsuccess=()=>res(r.result||null);r.onerror=()=>rej(r.error)})}
+function putStored(v){return new Promise((res,rej)=>{const tx=db.transaction(STORE,'readwrite');tx.objectStore(STORE).put(v,KEY);tx.oncomplete=()=>res();tx.onerror=()=>rej(tx.error)})}
+function deleteStored(){return new Promise((res,rej)=>{const tx=db.transaction(STORE,'readwrite');tx.objectStore(STORE).delete(KEY);tx.oncomplete=()=>res();tx.onerror=()=>rej(tx.error)})}
+
+/* ---------- Cifrado ----------
+   Formato 2: una clave maestra aleatoria (AES-256) cifra la bóveda.
+   Esa clave se guarda envuelta dos veces: con la contraseña y con el código de recuperación.
+   Ni la contraseña, ni el código, ni la clave maestra se guardan en claro. */
+async function kdf(secret,salt){const base=await subtle.importKey('raw',enc.encode(secret),'PBKDF2',false,['deriveKey']);return subtle.deriveKey({name:'PBKDF2',salt,iterations:ITER,hash:'SHA-256'},base,{name:'AES-GCM',length:256},false,['encrypt','decrypt'])}
+async function wrapRaw(raw,secret){const salt=rand(16),iv=rand(12),k=await kdf(secret,salt);const data=await subtle.encrypt({name:'AES-GCM',iv},k,raw);return {kdf:'PBKDF2-SHA256-'+ITER,salt:b64(salt),iv:b64(iv),data:b64(new Uint8Array(data))}}
+async function unwrapRaw(w,secret){const k=await kdf(secret,un64(w.salt));return new Uint8Array(await subtle.decrypt({name:'AES-GCM',iv:un64(w.iv)},k,un64(w.data)))}
+function importDek(raw){return subtle.importKey('raw',raw,'AES-GCM',false,['encrypt','decrypt'])}
+async function encryptObject(obj,key){const iv=rand(12);const data=await subtle.encrypt({name:'AES-GCM',iv},key,enc.encode(JSON.stringify(obj)));return {iv:b64(iv),data:b64(new Uint8Array(data))}}
+async function decryptObject(box,key){const data=await subtle.decrypt({name:'AES-GCM',iv:un64(box.iv)},key,un64(box.data));return JSON.parse(dec.decode(data))}
+async function persist(){/* funciona igual para formato 2 y para una bóveda antigua cuya migración falló */const rec={...stored,box:await encryptObject(vault,vaultKey),updatedAt:new Date().toISOString()};await putStored(rec);stored=rec}
+function normalizeVault(){vault.documents=Array.isArray(vault.documents)?vault.documents:[];vault.consultations=vault.consultations||[]}
+
+/* Código de recuperación: 160 bits aleatorios en Base32 Crockford (sin I, L, O, U) */
+const B32='0123456789ABCDEFGHJKMNPQRSTVWXYZ';
+function newRecoveryCode(){const bytes=rand(20);let bits=0,val=0,out='';for(const b of bytes){val=(val<<8)|b;bits+=8;while(bits>=5){out+=B32[(val>>>(bits-5))&31];bits-=5}val&=(1<<bits)-1}return out.match(/.{4}/g).join('-')}
+function normalizeCode(s){return String(s||'').toUpperCase().replace(/[^0-9A-Z]/g,'').replace(/O/g,'0').replace(/[IL]/g,'1')}
+function validCode(n){return n.length===32&&[...n].every(c=>B32.includes(c))}
+
+/* ---------- Pantallas ---------- */
+function show(which){currentScreen=which;['setup','unlock','recover','codeScreen','app'].forEach(id=>$(id).classList.toggle('hidden',id!==which));$('lockBtn').classList.toggle('hidden',which!=='app');$('mainnav').classList.toggle('hidden',which!=='app');window.scrollTo(0,0)}
+function enterApp(msgKey){show('app');navigatePage('vault');render();notify(tr(msgKey));lastActivity=Date.now();renderSecurity()}
+function navigatePage(page){
+  const allowed=['vault','docs','reports','backup','security'];if(!allowed.includes(page))page='vault';
+  document.querySelectorAll('.app-page').forEach(v=>{const s=v.id==='page-'+page;v.classList.toggle('active',s);v.hidden=!s;v.setAttribute('aria-hidden',String(!s))});
+  document.querySelectorAll('.navitem').forEach(b=>{const s=b.dataset.page===page;b.classList.toggle('active',s);b.setAttribute('aria-current',s?'page':'false')});
+  window.scrollTo({top:0,behavior:'smooth'});
+  if(page==='reports')renderReports();if(page==='security')renderSecurity();
+}
+document.querySelectorAll('.navitem').forEach(b=>b.addEventListener('click',()=>navigatePage(b.dataset.page)));
+
+/* ---------- Pantalla del código ---------- */
+function showRecoveryCode(code,introKey,next){
+  currentCode=code;codeNext=next;
+  $('codeIntro').textContent=tr(introKey);$('codeIntro').dataset.key=introKey;
+  $('codeBox').innerHTML=code.split('-').map(g=>`<span>${g}</span>`).join('');
+  $('codeAck').checked=false;$('codeContinue').disabled=true;say('codeMsg','');
+  show('codeScreen');
+}
+$('codeAck').onchange=()=>{$('codeContinue').disabled=!$('codeAck').checked};
+$('codeContinue').onclick=()=>{const next=codeNext;currentCode=null;codeNext=null;$('codeBox').innerHTML='';if(next)next()};
+$('codeCopy').onclick=async()=>{try{await navigator.clipboard.writeText(currentCode);say('codeMsg',tr('copied'),'ok')}catch(e){const r=document.createRange();r.selectNodeContents($('codeBox'));const s=getSelection();s.removeAllRanges();s.addRange(r)}};
+$('codeDownload').onclick=()=>{const txt=`${tr('codeFileTitle')}\r\n\r\n${currentCode}\r\n\r\n${tr('codeFileBody').replace(/\n/g,'\r\n')}\r\n\r\n${tr('codeFileDate')}: ${new Date().toLocaleString(locale())}\r\n`;download(new Blob([txt],{type:'text/plain;charset=utf-8'}),'mivault-codigo-recuperacion.txt')};
+$('codePrint').onclick=()=>window.print();
+
+/* ---------- Límite de intentos ---------- */
+function getThrottle(){try{return JSON.parse(lsGet('mv-throttle'))||{n:0,until:0}}catch(e){return {n:0,until:0}}}
+function failDelay(n){return n<5?0:Math.min(30000*2**(n-5),15*60000)}
+function registerFail(){const t=getThrottle();t.n++;t.until=Date.now()+failDelay(t.n);lsSet('mv-throttle',JSON.stringify(t));return t}
+function resetThrottle(){lsSet('mv-throttle',JSON.stringify({n:0,until:0}))}
+function throttleWait(){const t=getThrottle();return Math.max(0,Math.ceil((t.until-Date.now())/1000))}
+
+/* ---------- Crear ---------- */
+$('createBtn').onclick=()=>busy($('createBtn'),async()=>{
+  const a=$('newPass').value,b=$('newPass2').value;
+  if(a.length<10)return say('setupMsg',tr('passShort'));if(a!==b)return say('setupMsg',tr('passMismatch'));say('setupMsg','');
+  try{
+    const raw=rand(32),code=newRecoveryCode(),now=new Date().toISOString();
+    const rec={format:2,createdAt:now,recoveryAt:now,wraps:{pw:await wrapRaw(raw,a),rc:await wrapRaw(raw,normalizeCode(code))}};
+    vaultKey=await importDek(raw);raw.fill(0);vault={documents:[],consultations:[]};
+    stored=rec;await persist();
+    $('newPass').value=$('newPass2').value='';updateMeters();
+    showRecoveryCode(code,'codeNew',()=>enterApp('created'));
+  }catch(e){say('setupMsg',tr('createFailed'))}
+});
+
+/* ---------- Desbloquear (incluye migración de formato 1) ---------- */
+async function doUnlock(){
+  const pass=$('pass').value;if(!pass)return say('unlockMsg',tr('enterPass'));
+  const wait=throttleWait();if(wait)return say('unlockMsg',tr('tooMany',{s:wait}));
+  stored=await getStored();if(!stored){show('setup');return}
+  let legacyKey=null;
+  try{
+    if(stored.format===2){const raw=await unwrapRaw(stored.wraps.pw,pass);vaultKey=await importDek(raw);raw.fill(0);vault=await decryptObject(stored.box,vaultKey)}
+    else{legacyKey=await kdf(pass,un64(stored.salt));vault=await decryptObject(stored.box,legacyKey)}
+  }catch(e){const t=registerFail();const w=throttleWait();say('unlockMsg',w?tr('tooMany',{s:w}):tr('wrongPassOrData'));return}
+  normalizeVault();resetThrottle();say('unlockMsg','');$('lockReason').classList.add('hidden');
+  if(legacyKey){
+    try{
+      const raw=rand(32),code=newRecoveryCode(),now=new Date().toISOString();
+      const wraps={pw:await wrapRaw(raw,pass),rc:await wrapRaw(raw,normalizeCode(code))};
+      const key=await importDek(raw);raw.fill(0);
+      const rec={format:2,createdAt:stored.createdAt||now,recoveryAt:now,migratedAt:now,wraps,box:await encryptObject(vault,key)};
+      await putStored(rec);stored=rec;vaultKey=key;$('pass').value='';
+      showRecoveryCode(code,'codeMigrated',()=>enterApp('unlocked'));return;
+    }catch(e){vaultKey=legacyKey;/* si falla la migración, sigue funcionando con el formato anterior */}
+  }
+  $('pass').value='';enterApp('unlocked');
+}
+$('unlockForm').addEventListener('submit',e=>{e.preventDefault();busy($('unlockBtn'),doUnlock)});
 
 
-const translations={
-es:{tagline:'Tus documentos, siempre seguros',install:'Instalar aplicación',lock:'Bloquear',navVault:'🔐 Caja fuerte',navDocs:'▤ Documentos',navBackup:'↕ Respaldos',navReports:'▥ Reportes',reportsTitle:'Reportes de consultas',reportsHint:'Busca archivos guardados por fecha, grupo y tipo de documento',fromDate:'Desde',toDate:'Hasta',reportCategory:'Tipo de documento',reportSpace:'Grupo',clearFilters:'Limpiar filtros',runReport:'Consultar reporte',exportReport:'Exportar CSV',reportPrivacy:'La consulta muestra documentos guardados en esta caja fuerte local. Las fechas corresponden a la fecha de creación del registro.',consultationsCount:'consultas',filesFound:'archivos encontrados',noFilesFound:'No hay documentos guardados para los filtros seleccionados.',noConsultations:'No hay consultas para los filtros seleccionados.',dateTime:'Fecha y hora',document:'Documento',openFile:'Abrir archivo',attachments:'Adjuntos',file:'Archivo',unsupportedPreview:'Este tipo de archivo no se puede previsualizar aquí.',downloadFile:'Descargar archivo',localOnly:'Almacenamiento local cifrado',createVault:'Crear tu caja fuerte',createHint:'Define una contraseña larga que puedas recordar. Se usa para cifrar los documentos en este dispositivo.',passwordLabel:'Contraseña',repeatPassword:'Repite la contraseña',createBtn:'Crear caja fuerte',unlockTitle:'Desbloquear caja fuerte',unlockHint:'Introduce la contraseña para descifrar los documentos guardados en este dispositivo.',unlockBtn:'Desbloquear',addTitle:'Agregar documento',encryptedNote:'Todo se cifra antes de guardarse',nameLabel:'Nombre del documento *',categoryLabel:'Categoría',spaceLabel:'Espacio',expiryLabel:'Fecha de vencimiento',filesLabel:'Archivos adjuntos (PDF o imágenes; hasta 15 MB cada uno)',cameraBtn:'📷 Tomar foto',multiPhotoNote:'Puedes seleccionar varias fotos a la vez.',notesLabel:'Notas (opcional)',saveBtn:'Guardar cifrado',myDocs:'Mis documentos',searchLabel:'Buscar',filterLabel:'Filtrar por espacio',backupTitle:'Respaldo cifrado',backupPassLabel:'Contraseña para el respaldo',restoreFileLabel:'Archivo de respaldo (.dsafe)',exportBtn:'Crear respaldo cifrado',restoreBtn:'Restaurar respaldo seleccionado',docCount:'documento(s)',expires:'Vence',noExpiry:'Sin vencimiento',attachments:'archivo(s)',delete:'Eliminar',emptyDocs:'No hay documentos que coincidan. Agrega el primero arriba.',confirmDelete:'¿Eliminar este documento de la caja fuerte?',deleted:'Documento eliminado y caja fuerte actualizada.',enterName:'Escribe el nombre del documento.',fileTooLarge:'Cada archivo debe pesar 15 MB o menos.',saved:'Documento guardado cifrado en este dispositivo.',saveFailed:'No se pudo guardar el documento.',selectFiles:'Archivos seleccionados',wrongRestore:'No se pudo restaurar: contraseña incorrecta o archivo inválido.',restoreDone:'Respaldo restaurado y guardado cifrado en este dispositivo.',backupDone:'Respaldo cifrado creado. Conserva la contraseña: no se puede recuperar si la olvidas.',backupFailed:'No se pudo crear el respaldo.',categoryId:'Identificación',categoryFamily:'Familia',categoryBusiness:'Empresa',categoryVehicles:'Vehículos',categoryFinance:'Finanzas',categoryHealth:'Salud',categoryContracts:'Contratos',categoryOther:'Otros',spacePersonal:'Personal',spaceFamily:'Familia',spaceBusiness:'Empresa',all:'Todos',notesPlaceholder:'Información útil',searchPlaceholder:'Nombre, categoría o espacio',backupPassPlaceholder:'Mínimo 10 caracteres',restorePlaceholder:'Selecciona un archivo .dsafe'},
-en:{tagline:'Your documents, always secure',install:'Install app',lock:'Lock',navVault:'🔐 Vault',navDocs:'▤ Documents',navBackup:'↕ Backups',navReports:'▥ Reports',reportsTitle:'Document access reports',reportsHint:'Find saved files by date, group, and document type',fromDate:'From',toDate:'To',reportCategory:'Document type',reportSpace:'Group',clearFilters:'Clear filters',runReport:'Run report',exportReport:'Export CSV',reportPrivacy:'The history is encrypted inside this vault and records consultations made on this device only.',consultationsCount:'consultations',noConsultations:'No consultations match these filters.',dateTime:'Date and time',document:'Document',openFile:'Open file',attachments:'Attachments',file:'File',unsupportedPreview:'This file type cannot be previewed here.',downloadFile:'Download file',localOnly:'Encrypted local storage',createVault:'Create your vault',createHint:'Choose a strong password you can remember. It encrypts documents on this device.',passwordLabel:'Password',repeatPassword:'Repeat password',createBtn:'Create vault',unlockTitle:'Unlock vault',unlockHint:'Enter your password to decrypt documents stored on this device.',unlockBtn:'Unlock',addTitle:'Add document',encryptedNote:'Everything is encrypted before saving',nameLabel:'Document name *',categoryLabel:'Category',spaceLabel:'Workspace',expiryLabel:'Expiration date',filesLabel:'Attachments (PDFs or images; up to 15 MB each)',cameraBtn:'📷 Take photo',multiPhotoNote:'You can select multiple photos at once.',notesLabel:'Notes (optional)',saveBtn:'Save encrypted',myDocs:'My documents',searchLabel:'Search',filterLabel:'Filter by workspace',backupTitle:'Encrypted backup',backupPassLabel:'Backup password',restoreFileLabel:'Backup file (.dsafe)',exportBtn:'Create encrypted backup',restoreBtn:'Restore selected backup',docCount:'document(s)',expires:'Expires',noExpiry:'No expiration',attachments:'file(s)',delete:'Delete',emptyDocs:'No matching documents. Add your first document above.',confirmDelete:'Delete this document from the vault?',deleted:'Document deleted and vault updated.',enterName:'Enter a document name.',fileTooLarge:'Each file must be 15 MB or smaller.',saved:'Document saved encrypted on this device.',saveFailed:'Could not save the document.',selectFiles:'Selected files',wrongRestore:'Could not restore: wrong password or invalid file.',restoreDone:'Backup restored and saved encrypted on this device.',backupDone:'Encrypted backup created. Keep its password safe; it cannot be recovered if lost.',backupFailed:'Could not create the backup.',categoryId:'Identification',categoryFamily:'Family',categoryBusiness:'Business',categoryVehicles:'Vehicles',categoryFinance:'Finance',categoryHealth:'Health',categoryContracts:'Contracts',categoryOther:'Other',spacePersonal:'Personal',spaceFamily:'Family',spaceBusiness:'Business',all:'All',notesPlaceholder:'Useful information',searchPlaceholder:'Name, category or workspace',backupPassPlaceholder:'At least 10 characters',restorePlaceholder:'Choose a .dsafe file'}
+/* ---------- Recuperar ---------- */
+$('forgotBtn').onclick=async()=>{stored=await getStored();const legacy=!stored||stored.format!==2;$('recoverForm').classList.toggle('hidden',legacy);$('recoverLegacy').classList.toggle('hidden',!legacy);say('recoverMsg','');$('wipeConfirm').value='';show('recover');if(!legacy)$('recCode').focus()};
+$('recoverBack').onclick=$('recoverBack2').onclick=()=>{['recCode','recPass','recPass2'].forEach(id=>$(id).value='');say('recoverMsg','');show('unlock');$('pass').focus()};
+$('recCode').addEventListener('input',e=>{const n=normalizeCode(e.target.value).slice(0,32);const f=n.match(/.{1,4}/g)?.join('-')||'';if(f!==e.target.value)e.target.value=f});
+$('recoverBtn').onclick=()=>busy($('recoverBtn'),async()=>{
+  const code=normalizeCode($('recCode').value),a=$('recPass').value,b=$('recPass2').value;
+  if(!validCode(code))return say('recoverMsg',tr('codeInvalid'));
+  if(a.length<10)return say('recoverMsg',tr('passShort'));if(a!==b)return say('recoverMsg',tr('passMismatch'));
+  stored=await getStored();
+  let raw;try{raw=await unwrapRaw(stored.wraps.rc,code)}catch(e){return say('recoverMsg',tr('codeWrong'))}
+  try{
+    const key=await importDek(raw);const data=await decryptObject(stored.box,key);
+    const newCode=newRecoveryCode(),now=new Date().toISOString();
+    const wraps={pw:await wrapRaw(raw,a),rc:await wrapRaw(raw,normalizeCode(newCode))};raw.fill(0);
+    const rec={...stored,wraps,recoveryAt:now,passwordChangedAt:now};await putStored(rec);
+    stored=rec;vaultKey=key;vault=data;normalizeVault();resetThrottle();
+    ['recCode','recPass','recPass2'].forEach(id=>$(id).value='');updateMeters();say('recoverMsg','');
+    showRecoveryCode(newCode,'codeRotated',()=>enterApp('recovered'));
+  }catch(e){say('recoverMsg',tr('genericError'))}
+});
+$('wipeBtn').onclick=async()=>{
+  if($('wipeConfirm').value.trim().toUpperCase()!==tr('wipeWord'))return say('recoverMsg',tr('wipeType'));
+  if(!await askConfirm(tr('wipeConfirm')))return;
+  await deleteStored();stored=null;vaultKey=null;vault={documents:[],consultations:[]};resetThrottle();$('wipeConfirm').value='';
+  show('setup');say('setupMsg',tr('wiped'),'warn');$('newPass').focus();
 };
-let lang=localStorage.getItem('ds-lang')||'es';
-function tr(k){return (translations[lang]||translations.es)[k]||translations.es[k]||k}
-function trCategory(v){const map={'Identificación':'categoryId','Identification':'categoryId','Familia':'categoryFamily','Family':'categoryFamily','Empresa':'categoryBusiness','Business':'categoryBusiness','Vehículos':'categoryVehicles','Vehicles':'categoryVehicles','Finanzas':'categoryFinance','Finance':'categoryFinance','Salud':'categoryHealth','Health':'categoryHealth','Contratos':'categoryContracts','Contracts':'categoryContracts','Otros':'categoryOther','Other':'categoryOther'};return tr(map[v]||v)}
-function trSpace(v){const map={'Personal':'spacePersonal','Familia':'spaceFamily','Family':'spaceFamily','Empresa':'spaceBusiness','Business':'spaceBusiness'};return tr(map[v]||v)}
-function applyLanguage(){document.documentElement.lang=lang;document.querySelectorAll('[data-i18n]').forEach(el=>{const k=el.dataset.i18n;if(translations[lang][k])el.textContent=translations[lang][k]});$('langBtn').textContent=lang==='es'?'EN':'ES';$('search').placeholder=tr('searchPlaceholder');$('notes').placeholder=tr('notesPlaceholder');$('backupPass').placeholder=tr('backupPassPlaceholder');$('restoreFile').setAttribute('aria-label',tr('restorePlaceholder'));const cat=$('category'),catVal=cat.value,space=$('space'),spaceVal=space.value,filter=$('filter'),filterVal=filter.value;cat.innerHTML=[['Identificación','categoryId'],['Familia','categoryFamily'],['Empresa','categoryBusiness'],['Vehículos','categoryVehicles'],['Finanzas','categoryFinance'],['Salud','categoryHealth'],['Contratos','categoryContracts'],['Otros','categoryOther']].map(([v,k])=>`<option value="${v}">${tr(k)}</option>`).join('');cat.value=catVal;space.innerHTML=[['Personal','spacePersonal'],['Familia','spaceFamily'],['Empresa','spaceBusiness']].map(([v,k])=>`<option value="${v}">${tr(k)}</option>`).join('');space.value=spaceVal;filter.innerHTML=`<option value="Todos">${tr('all')}</option>`+[['Personal','spacePersonal'],['Familia','spaceFamily'],['Empresa','spaceBusiness']].map(([v,k])=>`<option value="${v}">${tr(k)}</option>`).join('');filter.value=filterVal;const rc=$('reportCategory'),rcVal=rc.value;rc.innerHTML=`<option value="all">${tr('all')}</option>`+[['Identificación','categoryId'],['Familia','categoryFamily'],['Empresa','categoryBusiness'],['Vehículos','categoryVehicles'],['Finanzas','categoryFinance'],['Salud','categoryHealth'],['Contratos','categoryContracts'],['Otros','categoryOther']].map(([v,k])=>`<option value="${v}">${tr(k)}</option>`).join('');rc.value=rcVal||'all';render()}
-$('langBtn').onclick=()=>{lang=lang==='es'?'en':'es';localStorage.setItem('ds-lang',lang);applyLanguage()};
+
+/* ---------- Bloquear y bloqueo automático ---------- */
+function lockVault(reasonKey){
+  if(currentScreen!=='app')return;
+  vaultKey=null;vault={documents:[],consultations:[]};closeFileViewer();$('docs').innerHTML='';$('reportResults').innerHTML='';
+  ['curPass','chgPass','chgPass2','regenPass','backupPass','name','notes','expiry'].forEach(id=>$(id).value='');$('file').value='';cameraFiles=[];$('selectedFiles').textContent='';
+  show('unlock');$('pass').value='';
+  if(reasonKey){$('lockReason').textContent=tr(reasonKey);$('lockReason').classList.remove('hidden')}else $('lockReason').classList.add('hidden');
+}
+$('lockBtn').onclick=()=>lockVault('lockedManual');
+function autoLockMinutes(){const v=Number(lsGet('mv-autolock'));return Number.isFinite(v)&&lsGet('mv-autolock')!==null?v:5}
+['pointerdown','keydown','scroll','touchstart'].forEach(ev=>addEventListener(ev,()=>{lastActivity=Date.now()},{passive:true}));
+function checkIdle(){const m=autoLockMinutes();if(currentScreen==='app'&&m>0&&Date.now()-lastActivity>m*60000)lockVault('lockedIdle')}
+setInterval(checkIdle,15000);document.addEventListener('visibilitychange',()=>{if(!document.hidden)checkIdle()});
+$('autoLock').onchange=()=>{lsSet('mv-autolock',$('autoLock').value);notify(tr('autoLockSaved'))};
+
+/* ---------- Seguridad ---------- */
+function renderSecurity(){
+  const at=stored&&stored.recoveryAt;$('recoveryInfo').textContent=at?tr('recoveryActive',{d:new Date(at).toLocaleDateString(locale(),{year:'numeric',month:'long',day:'numeric'})}):'';
+  const sel=$('autoLock'),cur=String(autoLockMinutes());sel.innerHTML=[1,5,15,30,0].map(n=>`<option value="${n}">${n?tr('minutes',{n}):tr('never')}</option>`).join('');sel.value=cur;
+}
+$('changePassBtn').onclick=()=>busy($('changePassBtn'),async()=>{
+  const cur=$('curPass').value,a=$('chgPass').value,b=$('chgPass2').value;
+  if(!cur)return say('changePassMsg',tr('enterPass'));if(a.length<10)return say('changePassMsg',tr('passShort'));if(a!==b)return say('changePassMsg',tr('passMismatch'));if(a===cur)return say('changePassMsg',tr('passSame'));
+  let raw;try{raw=await unwrapRaw(stored.wraps.pw,cur)}catch(e){return say('changePassMsg',tr('wrongPass'))}
+  try{const now=new Date().toISOString();const rec={...stored,wraps:{...stored.wraps,pw:await wrapRaw(raw,a)},passwordChangedAt:now};raw.fill(0);await putStored(rec);stored=rec;['curPass','chgPass','chgPass2'].forEach(id=>$(id).value='');updateMeters();say('changePassMsg',tr('passChanged'),'ok')}catch(e){say('changePassMsg',tr('genericError'))}
+});
+$('regenBtn').onclick=()=>busy($('regenBtn'),async()=>{
+  const cur=$('regenPass').value;if(!cur)return say('regenMsg',tr('enterPass'));
+  let raw;try{raw=await unwrapRaw(stored.wraps.pw,cur)}catch(e){return say('regenMsg',tr('wrongPass'))}
+  try{const code=newRecoveryCode(),now=new Date().toISOString();const rec={...stored,wraps:{...stored.wraps,rc:await wrapRaw(raw,normalizeCode(code))},recoveryAt:now};raw.fill(0);await putStored(rec);stored=rec;$('regenPass').value='';say('regenMsg','');
+    showRecoveryCode(code,'codeRegenerated',()=>{show('app');navigatePage('security');notify(tr('codeRegenerated'))})}catch(e){say('regenMsg',tr('genericError'))}
+});
+
+/* ---------- Medidor de contraseña y botón Ver ---------- */
+function strength(p){if(!p)return -1;let s=0;if(p.length>=10)s++;if(p.length>=14)s++;if(/[a-z]/.test(p)&&/[A-Z]/.test(p))s++;if(/\d/.test(p))s++;if(/[^A-Za-z0-9]/.test(p))s++;if(p.length<10)s=Math.min(s,1);return Math.min(4,s)}
+const meterColors=['#c0392b','#d35400','#c99a06','#2a9d8f','#1f7a5c'];
+function updateMeters(){document.querySelectorAll('[data-meter]').forEach(m=>{const id=m.dataset.meter,s=strength($(id).value),bar=m.firstElementChild,lab=document.querySelector(`[data-meter-label="${id}"]`);bar.style.width=s<0?'0':((s+1)*20)+'%';bar.style.background=s<0?'transparent':meterColors[s];lab.textContent=s<0?'':tr('strength'+s)})}
+document.querySelectorAll('[data-meter]').forEach(m=>$(m.dataset.meter).addEventListener('input',updateMeters));
+document.querySelectorAll('input[type=password]').forEach(inp=>{const w=document.createElement('div');w.className='pw-wrap';inp.parentNode.insertBefore(w,inp);w.appendChild(inp);const t=document.createElement('button');t.type='button';t.className='pw-toggle';t.dataset.pwToggle='1';t.textContent=tr('show');t.onclick=()=>{const vis=inp.type==='password';inp.type=vis?'text':'password';t.textContent=tr(vis?'hide':'show')};w.appendChild(t)});
+
+/* ---------- Visor de archivos ---------- */
+function closeFileViewer(){$('fileViewer').classList.add('hidden');$('fileViewerBody').innerHTML='';if(viewerUrl){URL.revokeObjectURL(viewerUrl);viewerUrl=null}viewerFile=null}
+function openAttachment(file){
+  if(!file)return;const type=file.type||'application/octet-stream';const blob=new Blob([un64(file.data)],{type});
+  if(viewerUrl)URL.revokeObjectURL(viewerUrl);viewerUrl=URL.createObjectURL(blob);viewerFile=file;
+  $('fileViewerTitle').textContent=file.name||tr('file');const body=$('fileViewerBody');body.innerHTML='';
+  if(type==='application/pdf'){const f=document.createElement('iframe');f.src=viewerUrl;f.title=file.name||'PDF';f.style.cssText='width:100%;height:70vh;border:0;background:#fff';body.appendChild(f)}
+  else if(type.startsWith('image/')){const i=document.createElement('img');i.src=viewerUrl;i.alt=file.name||tr('file');i.style.cssText='display:block;max-width:100%;max-height:70vh;margin:auto;object-fit:contain';body.appendChild(i)}
+  else{const p=document.createElement('p');p.textContent=tr('unsupportedPreview');body.appendChild(p)}
+  $('fileViewer').classList.remove('hidden');
+}
+$('fileViewerClose').onclick=closeFileViewer;$('fileViewer').onclick=e=>{if(e.target===$('fileViewer'))closeFileViewer()};
+$('fileViewerDownload').onclick=()=>{if(viewerFile)download(new Blob([un64(viewerFile.data)],{type:viewerFile.type||'application/octet-stream'}),viewerFile.name||'documento')};
+addEventListener('keydown',e=>{if(e.key==='Escape'&&!$('confirmBox').classList.contains('hidden'))$('confirmCancel').click();if(e.key==='Escape'&&!$('fileViewer').classList.contains('hidden'))closeFileViewer()});
+async function logConsultation(d,f){vault.consultations.push({id:crypto.randomUUID(),documentId:d.id,name:d.name,category:d.category||'Otros',fileName:f.name||'',at:new Date().toISOString()});try{await persist()}catch(e){}}
+
+/* ---------- Vencimientos ---------- */
+function daysUntil(day){const [y,m,d]=day.split('-').map(Number);const t=new Date();const a=Date.UTC(y,m-1,d),b=Date.UTC(t.getFullYear(),t.getMonth(),t.getDate());return Math.round((a-b)/86400000)}
+function expiryState(d){if(!d.expiry)return null;const n=daysUntil(d.expiry);return n<0?{cls:'expired',n}:n<=30?{cls:'soon',n}:null}
+function relDays(n){return n===0?tr('today'):n>0?tr('daysLeft',{n}):tr('daysAgo',{n:-n})}
+function renderExpiring(){const list=vault.documents.map(d=>({d,s:expiryState(d)})).filter(x=>x.s).sort((a,b)=>a.s.n-b.s.n);$('expPanel').classList.toggle('hidden',!list.length);$('expList').innerHTML=list.slice(0,8).map(({d,s})=>`<li><span><strong>${esc(d.name)}</strong> <span class="muted">· ${esc(trSpace(d.space))}</span></span><span class="tag ${s.cls}">${s.cls==='expired'?tr('expiredTag'):tr('soonTag')} · ${relDays(s.n)}</span></li>`).join('')}
+
+/* ---------- Documentos ---------- */
+function render(){
+  const q=$('search').value.toLowerCase(),f=$('filter').value;
+  const arr=vault.documents.filter(d=>(f==='Todos'||d.space===f)&&[d.name,d.category,trCategory(d.category),d.space,trSpace(d.space),d.notes].join(' ').toLowerCase().includes(q)).sort((a,b)=>String(b.createdAt).localeCompare(String(a.createdAt)));
+  $('docCount').textContent=`${arr.length} ${tr('docCount')}`;
+  $('docs').innerHTML=arr.length?arr.map(d=>{const files=docFiles(d),s=expiryState(d);return `<article class="doc"><div><h3>${esc(d.name)}</h3><span class="tag">${esc(trCategory(d.category))}</span><span class="tag">${esc(trSpace(d.space))}</span>${s?`<span class="tag ${s.cls}">${s.cls==='expired'?tr('expiredTag'):tr('soonTag')}</span>`:''}<div class="muted">${d.expiry?tr('expires')+': '+esc(new Date(d.expiry+'T12:00').toLocaleDateString(locale())):tr('noExpiry')}${files.length?' · '+files.length+' '+tr('filesCount'):''}</div>${d.notes?'<p>'+esc(d.notes)+'</p>':''}<div class="actions">${files.map((x,i)=>`<button type="button" class="secondary" data-file="${esc(d.id)}" data-index="${i}">${esc(x.name)}</button>`).join('')}</div></div><div class="actions"><button type="button" class="danger" data-delete="${esc(d.id)}">${tr('delete')}</button></div></article>`}).join(''):`<p class="muted">${tr('emptyDocs')}</p>`;
+  renderExpiring();renderReports();
+}
+$('docs').addEventListener('click',async e=>{
+  const fb=e.target.closest('[data-file]');if(fb){const d=vault.documents.find(x=>x.id===fb.dataset.file),f=d&&docFiles(d)[Number(fb.dataset.index)];if(f){openAttachment(f);logConsultation(d,f)}return}
+  const db_=e.target.closest('[data-delete]');if(db_&&await askConfirm(tr('confirmDelete'))){vault.documents=vault.documents.filter(d=>d.id!==db_.dataset.delete);await persist();render();notify(tr('deleted'))}
+});
+$('search').oninput=render;$('filter').onchange=render;
 $('cameraBtn').onclick=()=>$('cameraFile').click();
 function updateSelectedFiles(){const files=[...$('file').files,...cameraFiles];$('selectedFiles').textContent=files.length?`${tr('selectFiles')}: ${files.map(f=>f.name).join(', ')}`:''}
 $('file').addEventListener('change',updateSelectedFiles);
 $('cameraFile').addEventListener('change',()=>{cameraFiles.push(...$('cameraFile').files);$('cameraFile').value='';updateSelectedFiles()});
-function navigatePage(page){
-  const allowed=['vault','docs','reports','backup'];
-  if(!allowed.includes(page)) page='vault';
-  document.querySelectorAll('.app-page').forEach(view=>{
-    const selected=view.id==='page-'+page;
-    view.classList.toggle('active',selected);
-    view.hidden=!selected;
-    view.setAttribute('aria-hidden',String(!selected));
-  });
-  document.querySelectorAll('.navitem').forEach(btn=>{
-    const selected=btn.dataset.page===page;
-    btn.classList.toggle('active',selected);
-    btn.setAttribute('aria-current',selected?'page':'false');
-  });
-  window.scrollTo({top:0,behavior:'smooth'});
-  if(page==='reports') renderReports();
-}
-document.querySelectorAll('.navitem').forEach(btn=>btn.addEventListener('click',()=>navigatePage(btn.dataset.page)));
+function bytesFromFile(file){return new Promise((res,rej)=>{const r=new FileReader();r.onload=()=>res(b64(new Uint8Array(r.result)));r.onerror=()=>rej(r.error);r.readAsArrayBuffer(file)})}
+$('saveBtn').onclick=()=>busy($('saveBtn'),async()=>{
+  const name=$('name').value.trim();if(!name){notify(tr('enterName'),true);$('name').focus();return}
+  const selected=[...$('file').files,...cameraFiles];if(selected.some(f=>f.size>15*1024*1024)){notify(tr('fileTooLarge'),true);return}
+  try{const files=[];for(const f of selected)files.push({name:f.name,type:f.type||'application/octet-stream',data:await bytesFromFile(f)});
+    var newId=crypto.randomUUID();vault.documents.push({id:newId,name,category:$('category').value,space:$('space').value,expiry:$('expiry').value,notes:$('notes').value.trim(),files,createdAt:new Date().toISOString()});
+    await persist();$('name').value=$('expiry').value=$('notes').value='';$('file').value='';$('cameraFile').value='';cameraFiles=[];$('selectedFiles').textContent='';render();notify(tr('saved'))}
+  catch(e){if(typeof newId!=='undefined')vault.documents=vault.documents.filter(d=>d.id!==newId);notify(tr('saveFailed'),true)}
+});
 
-async function init(){await openDB();const saved=await getStored();show(saved?'unlock':'setup');applyLanguage();if(!saved) $('newPass').focus()}
-$('createBtn').onclick=async()=>{const a=$('newPass').value,b=$('newPass2').value;if(a.length<10){alert(lang==='es'?'Usa una contraseña de al menos 10 caracteres.':'Use a password of at least 10 characters.');return}if(a!==b){alert(lang==='es'?'Las contraseñas no coinciden.':'Passwords do not match.');return}try{const salt=crypto.getRandomValues(new Uint8Array(16));vaultSalt=salt;vaultKey=await derive(a,salt);vault={documents:[],consultations:[]};const box=await encryptObject(vault,vaultKey);await putStored({format:1,salt:b64(salt),box});$('newPass').value=$('newPass2').value='';show('app');navigatePage('vault');render();notify('Caja fuerte creada. Crea ahora un respaldo cifrado y guarda la contraseña en un lugar seguro.')}catch(e){alert('No se pudo crear la caja fuerte. Abre la app desde HTTPS o localhost.')}};
-$('unlockBtn').onclick=async()=>{try{const saved=await getStored();if(!saved||!saved.salt)throw new Error('vault');vaultSalt=un64(saved.salt);vaultKey=await derive($('pass').value,vaultSalt);vault=await decryptObject(saved.box,vaultKey);vault.consultations=vault.consultations||[];$('pass').value='';$('unlockError').classList.add('hidden');show('app');navigatePage('vault');render();notify('Caja fuerte desbloqueada.')}catch(e){$('unlockError').textContent='Contraseña incorrecta o datos dañados.';$('unlockError').classList.remove('hidden')}};
-$('lockBtn').onclick=()=>{vaultKey=null;vaultSalt=null;vault={documents:[]};$('docs').innerHTML='';show('unlock');$('pass').value='';notify('Caja fuerte bloqueada.')};
-$('saveBtn').onclick=async()=>{const name=$('name').value.trim();if(!name){alert(tr('enterName'));return}const selected=[...$('file').files,...cameraFiles];if(selected.some(f=>f.size>15*1024*1024)){alert(tr('fileTooLarge'));return}try{const files=[];for(const f of selected)files.push({name:f.name,type:f.type||'application/octet-stream',data:await bytesFromFile(f)});vault.documents.push({id:crypto.randomUUID(),name,category:$('category').value,space:$('space').value,expiry:$('expiry').value,notes:$('notes').value.trim(),files,createdAt:new Date().toISOString()});await persist();$('name').value=$('expiry').value=$('notes').value='';$('file').value='';$('cameraFile').value='';cameraFiles=[];$('selectedFiles').textContent='';render();notify(tr('saved'))}catch(e){notify(tr('saveFailed'),true)}};
-$('search').oninput=render;$('filter').onchange=render;
+/* ---------- Reportes ---------- */
+function getFilteredDocuments(){const from=$('reportFrom').value,to=$('reportTo').value,cat=$('reportCategory').value,space=$('reportSpace').value;return vault.documents.filter(d=>{const day=localDay(d.createdAt);return (!from||day>=from)&&(!to||day<=to)&&(cat==='all'||d.category===cat)&&(space==='all'||d.space===space)}).sort((a,b)=>new Date(b.createdAt||0)-new Date(a.createdAt||0))}
+function renderReports(){
+  const docs=getFilteredDocuments();$('reportSummary').innerHTML=`<div class="report-stat">${docs.length} ${tr('filesFound')}</div>`;
+  if(!docs.length){$('reportResults').innerHTML=`<p class="muted">${tr('noFilesFound')}</p>`;return}
+  $('reportResults').innerHTML=`<div style="overflow-x:auto"><table class="report-table"><thead><tr><th>${tr('dateTime')}</th><th>${tr('document')}</th><th>${tr('reportSpace')}</th><th>${tr('reportCategory')}</th><th>${tr('attachmentsCol')}</th><th>${tr('openFile')}</th></tr></thead><tbody>${docs.map(d=>{const fs=docFiles(d);return `<tr><td>${esc(d.createdAt?new Date(d.createdAt).toLocaleDateString(locale()):'—')}</td><td><strong>${esc(d.name)}</strong></td><td>${esc(trSpace(d.space||''))}</td><td>${esc(trCategory(d.category||''))}</td><td>${fs.length?fs.map(f=>esc(f.name||tr('file'))).join('<br>'):'—'}</td><td>${fs.length?fs.map((f,i)=>`<button type="button" data-report-open="${esc(d.id)}" data-report-index="${i}">${tr('openFile')}</button>`).join('<br>'):'—'}</td></tr>`}).join('')}</tbody></table></div>`;
+}
+$('reportResults').addEventListener('click',e=>{const b=e.target.closest('[data-report-open]');if(!b)return;const d=vault.documents.find(x=>String(x.id)===b.dataset.reportOpen),f=d&&docFiles(d)[Number(b.dataset.reportIndex)];if(f){openAttachment(f);logConsultation(d,f)}});
 ['reportFrom','reportTo','reportSpace','reportCategory'].forEach(id=>$(id).addEventListener('change',renderReports));$('reportSearch').onclick=renderReports;
 $('reportClear').onclick=()=>{$('reportFrom').value='';$('reportTo').value='';$('reportSpace').value='all';$('reportCategory').value='all';renderReports()};
-$('reportCsv').onclick=()=>{const docs=getFilteredDocuments();if(!docs.length){notify(tr('noFilesFound'),true);return}const csv=[[tr('dateTime'),tr('document'),tr('reportSpace'),tr('reportCategory'),tr('attachments')],...docs.map(d=>[d.createdAt?new Date(d.createdAt).toLocaleDateString(lang==='es'?'es-SV':'en-US'):'',d.name,trSpace(d.space||''),trCategory(d.category||''),(d.files||(d.file?[d.file]:[])).map(f=>f.name||'').join('; ')])].map(row=>row.map(v=>'"'+String(v??'').replace(/"/g,'""')+'"').join(',')).join('\r\n');const blob=new Blob(['\ufeff'+csv],{type:'text/csv;charset=utf-8'}),url=URL.createObjectURL(blob),a=document.createElement('a');a.href=url;a.download='reporte-consultas-documentos.csv';a.click();setTimeout(()=>URL.revokeObjectURL(url),2000)};
-$('exportBtn').onclick=async()=>{const pass=$('backupPass').value;if(pass.length<10){alert('Escribe una contraseña de respaldo de al menos 10 caracteres.');return}try{const salt=crypto.getRandomValues(new Uint8Array(16)),key=await derive(pass,salt),box=await encryptObject({app:'Documentos Seguros',version:4,createdAt:new Date().toISOString(),vault},key);const payload={format:'DSAFE-1',kdf:'PBKDF2-SHA256-310000',salt:b64(salt),box};const blob=new Blob([JSON.stringify(payload)],{type:'application/octet-stream'});const url=URL.createObjectURL(blob),a=document.createElement('a');a.href=url;a.download='documentos-seguros-respaldo.dsafe';a.click();setTimeout(()=>URL.revokeObjectURL(url),2000);$('backupStatus').textContent=tr('backupDone')}catch(e){$('backupStatus').textContent=tr('backupFailed')}};
-$('restoreBtn').onclick=async()=>{const f=$('restoreFile').files[0],pass=$('backupPass').value;if(!f){alert('Selecciona un archivo .dsafe.');return}if(pass.length<10){alert('Escribe la contraseña del respaldo.');return}if(!confirm('La restauración reemplazará los documentos de esta caja fuerte. ¿Continuar?'))return;try{const payload=JSON.parse(await f.text());if(payload.format!=='DSAFE-1')throw new Error('format');const key=await derive(pass,un64(payload.salt));const data=await decryptObject(payload.box,key);if(data.app!=='Documentos Seguros'||!Array.isArray(data.vault.documents))throw new Error('data');vault=data.vault;vault.consultations=vault.consultations||[];await persist();render();notify(tr('restoreDone'))}catch(e){alert(tr('wrongRestore'))}};
-window.addEventListener('beforeinstallprompt',e=>{e.preventDefault();installPrompt=e;$('installBtn').classList.remove('hidden')});
-$('installBtn').onclick=async()=>{if(installPrompt){installPrompt.prompt();await installPrompt.userChoice;installPrompt=null;$('installBtn').classList.add('hidden')}else alert('En iPhone: abre en Safari, toca Compartir y luego “Añadir a pantalla de inicio”. En Android, usa el menú del navegador y “Instalar aplicación” o “Añadir a pantalla de inicio”.')};
-if('serviceWorker'in navigator)window.addEventListener('load',()=>navigator.serviceWorker.register('./sw.js').catch(()=>{}));
-init().catch(()=>{show('setup');alert(lang==='es'?'Abre la aplicación desde HTTPS o localhost para activar el almacenamiento seguro.':'Open the app over HTTPS or localhost to enable secure storage.')});
+$('reportCsv').onclick=()=>{const docs=getFilteredDocuments();if(!docs.length){notify(tr('noFilesFound'),true);return}const rows=[[tr('dateTime'),tr('document'),tr('reportSpace'),tr('reportCategory'),tr('attachmentsCol')],...docs.map(d=>[d.createdAt?new Date(d.createdAt).toLocaleDateString(locale()):'',d.name,trSpace(d.space||''),trCategory(d.category||''),docFiles(d).map(f=>f.name||'').join('; ')])];const csv=rows.map(r=>r.map(v=>{let s=String(v??'');if(/^[=+\-@]/.test(s))s="'"+s;return '"'+s.replace(/"/g,'""')+'"'}).join(',')).join('\r\n');download(new Blob(['﻿'+csv],{type:'text/csv;charset=utf-8'}),tr('csvName'))};
+
+/* ---------- Respaldos ---------- */
+$('exportBtn').onclick=()=>busy($('exportBtn'),async()=>{
+  say('backupMsg','');const pass=$('backupPass').value;if(pass.length<10)return say('backupMsg',tr('backupPassShort'));
+  try{const salt=rand(16),key=await kdf(pass,salt),box=await encryptObject({app:'Documentos Seguros',version:5,createdAt:new Date().toISOString(),vault},key);
+    download(new Blob([JSON.stringify({format:'DSAFE-1',kdf:'PBKDF2-SHA256-310000',salt:b64(salt),box})],{type:'application/octet-stream'}),`mivault-respaldo-${localDay()}.dsafe`);
+    $('backupPass').value='';say('backupMsg',tr('backupDone'),'ok')}catch(e){say('backupMsg',tr('backupFailed'))}
+});
+$('restoreBtn').onclick=()=>busy($('restoreBtn'),async()=>{
+  say('backupMsg','');const f=$('restoreFile').files[0],pass=$('backupPass').value;if(!f)return say('backupMsg',tr('selectBackup'));if(!pass)return say('backupMsg',tr('enterBackupPass'));
+  if(!await askConfirm(tr('confirmRestore')))return;
+  try{const p=JSON.parse(await f.text());if(p.format!=='DSAFE-1')throw 0;const key=await kdf(pass,un64(p.salt));const data=await decryptObject(p.box,key);if(data.app!=='Documentos Seguros'||!Array.isArray(data.vault?.documents))throw 0;
+    vault=data.vault;normalizeVault();await persist();render();$('backupPass').value='';$('restoreFile').value='';say('backupMsg',tr('restoreDone'),'ok')}catch(e){say('backupMsg',tr('wrongRestore'))}
+});
+
+/* ---------- Idioma ---------- */
+function fillSelect(el,opts,allValue){const v=el.value;el.innerHTML=(allValue?`<option value="${allValue}">${tr('all')}</option>`:'')+opts.map(([val,k])=>`<option value="${val}">${tr(k)}</option>`).join('');el.value=v||(allValue||opts[0][0]);if(el.selectedIndex<0)el.selectedIndex=0}
+function applyLanguage(){
+  document.documentElement.lang=lang;
+  document.querySelectorAll('[data-i18n]').forEach(el=>{const k=el.dataset.i18n;if(translations[lang][k])el.textContent=translations[lang][k]});
+  document.querySelectorAll('[data-i18n-ph]').forEach(el=>el.placeholder=tr(el.dataset.i18nPh));
+  document.querySelectorAll('[data-pw-toggle]').forEach(t=>{const inp=t.previousElementSibling;t.textContent=tr(inp.type==='password'?'show':'hide')});
+  $('langBtn').textContent=lang==='es'?'EN':'ES';
+  if($('codeIntro').dataset.key)$('codeIntro').textContent=tr($('codeIntro').dataset.key);
+  fillSelect($('category'),CATEGORIES);fillSelect($('space'),SPACES);fillSelect($('filter'),SPACES,'Todos');fillSelect($('reportSpace'),SPACES,'all');fillSelect($('reportCategory'),CATEGORIES,'all');
+  updateMeters();renderSecurity();if(currentScreen==='app')render();
+}
+$('langBtn').onclick=()=>{lang=lang==='es'?'en':'es';lsSet('ds-lang',lang);applyLanguage()};
+
+/* ---------- Instalación y arranque ---------- */
+addEventListener('beforeinstallprompt',e=>{e.preventDefault();installPrompt=e;$('installBtn').classList.remove('hidden')});
+$('installBtn').onclick=async()=>{if(installPrompt){installPrompt.prompt();await installPrompt.userChoice;installPrompt=null;$('installBtn').classList.add('hidden')}else notify(tr('installHelp'))};
+if('serviceWorker' in navigator)addEventListener('load',()=>navigator.serviceWorker.register('./sw.js').catch(()=>{}));
+async function init(){if(EMBED){$('codePrint').classList.add('hidden')}applyLanguage();if(!window.isSecureContext||!subtle)throw new Error('insecure');await openDB();stored=await getStored();show(stored?'unlock':'setup');(stored?$('pass'):$('newPass')).focus()}
+init().catch(()=>{show('setup');say('setupMsg',tr('needSecure'));$('createBtn').disabled=true});
 </script>
-<div id="fileViewer" class="viewer-overlay hidden" role="dialog" aria-modal="true" aria-labelledby="fileViewerTitle"><div class="viewer-panel"><div class="viewer-head"><strong id="fileViewerTitle">Archivo</strong><button type="button" id="fileViewerClose" class="secondary">Cerrar</button></div><div id="fileViewerBody" class="viewer-body"></div></div></div>
 </body></html>
